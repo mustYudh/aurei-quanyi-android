@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <color name="lb_cm_gray_font">#8F8F8F</color>
+  <color name="lb_cm_base_dialog_background_color">#44000000</color>
+
+  <color name="lb_cm_black_font">#203264</color>
+
+  <color name="lb_cm_main_color">#2772FF</color>
+  <color name="lb_cm_main_color_press">#6398fc</color>
+
+  <color name="lb_cm_gray_line">#e2e2e2</color>
+  <color name="lb_cm_blue_text">#0076FF</color>
+
+  <color name="lb_cm_white">#ffffff</color>
+
+  <color name="lb_cm_list_text_selected_color">#FF352E</color>
+  <color name="lb_cm_list_text_unselected_color">#626262</color>
+  <color name="lb_cm_dialog_right_button_color">#33326F</color>
+  <color name="lb_cm_dialog_text_color">#666666</color>
+  <color name="lb_cm_dialog_title_color">#212121</color>
+  <color name="lb_cm_dialog_left_button_color">#D4D9E6</color>
+
+
+</resources>

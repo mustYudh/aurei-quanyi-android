@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><!--baseDialog和basePopupWindow的模板View-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <!--方便自定义颜色和动画-->
+  <View
+      android:id="@+id/base_shadow"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:alpha="0"
+      android:background="@color/lb_cm_base_dialog_background_color"
+      />
+
+  <LinearLayout
+      android:id="@+id/base_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginBottom="20dp"
+      android:clickable="true"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      />
+
+</FrameLayout>

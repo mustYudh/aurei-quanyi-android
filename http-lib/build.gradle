@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 22
+
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation "com.android.support:appcompat-v7:${V7_APPCOMPAT_VERSION}"
+    //使用retrofit的依赖包
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+
+    //RxJava
+    api 'io.reactivex.rxjava2:rxjava:2.1.12'
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    //OkHttp的依赖包
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+    //Gson序列化反序列化的依赖包
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //磁盘缓存的依赖包
+    api 'com.jakewharton:disklrucache:2.0.2'
+
+}
+
+

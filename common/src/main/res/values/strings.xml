@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">common</string>
+    <item name="common_util_statusbar_fake_status_bar_view" type="id"/>
+    <item name="common_util_statusbar_translucent_view" type="id"/>
+</resources>
