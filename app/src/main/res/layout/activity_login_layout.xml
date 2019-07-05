@@ -6,12 +6,13 @@
         android:scrollbars="none"
         android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".LoginActivity">
+            tools:context=".module.login.LoginActivity">
 
 
         <LinearLayout
@@ -23,12 +24,13 @@
 
 
             <com.yu.common.ui.BarIconContainer
+                    android:id="@+id/back"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     app:bar_icon="@drawable/ic_back_white"/>
 
             <ImageView
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="28dp"
                     android:layout_gravity="center_horizontal"
                     android:tint="@color/lb_cm_white"
                     android:scaleType="centerCrop"
@@ -39,7 +41,7 @@
 
             <TextView
                     android:paddingTop="13dp"
-                    android:paddingBottom="74dp"
+                    android:paddingBottom="54dp"
                     android:textSize="12sp"
                     android:text="澳雷古雅权益平台"
                     android:textColor="@color/lb_cm_white"
@@ -47,12 +49,14 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"/>
 
+            <View
+                    android:background="@drawable/shape_login_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
         </LinearLayout>
 
 
         <LinearLayout
-                android:layout_marginTop="-29dp"
-                android:background="@drawable/shape_login_bg"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -62,8 +66,8 @@
             <TextView
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
-                    android:paddingTop="42dp"
-                    android:paddingBottom="42dp"
+                    android:paddingTop="17dp"
+                    android:paddingBottom="37dp"
                     android:text="登录"
                     android:textColor="@color/lb_cm_black_font"
                     android:textSize="22sp"
@@ -72,6 +76,7 @@
 
 
             <EditText
+                    android:id="@+id/user_account"
                     android:textColorHint="@color/edit_text_hint"
                     android:hint="请输入账号名手机或邮箱"
                     android:gravity="center"
@@ -85,6 +90,8 @@
 
 
             <EditText
+                    android:id="@+id/password"
+                    android:inputType="textPassword"
                     android:layout_marginTop="10dp"
                     android:textColorHint="@color/edit_text_hint"
                     android:hint="请输入密码"
@@ -99,6 +106,7 @@
 
 
             <com.yu.common.ui.DelayClickImageView
+                    android:id="@+id/login"
                     android:layout_marginTop="47dp"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerCrop"
@@ -108,13 +116,14 @@
 
 
             <LinearLayout
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <com.yu.common.ui.DelayClickTextView
+                        android:id="@+id/register"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
                         android:textColor="@color/text_color"
@@ -130,6 +139,7 @@
 
 
                 <com.yu.common.ui.DelayClickTextView
+                        android:id="@+id/forget_password"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
                         android:textColor="@color/text_color"
@@ -139,7 +149,7 @@
             </LinearLayout>
 
             <FrameLayout
-                    android:layout_marginBottom="4dp"
+                    android:paddingBottom="20dp"
                     android:clipChildren="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -157,6 +167,7 @@
                         android:layout_height="85dp">
 
                     <com.yu.common.ui.DelayClickImageView
+                            android:id="@+id/sim_login"
                             android:src="@drawable/ic_sim"
                             android:scaleType="centerCrop"
                             android:layout_width="35dp"
