@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".LoginActivity">
+
+
+        <LinearLayout
+                android:paddingTop="@dimen/action_bar_height_top"
+                android:background="@color/app_main_color"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+
+            <com.yu.common.ui.BarIconContainer
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:bar_icon="@drawable/ic_back_white"/>
+
+            <ImageView
+                    android:layout_marginTop="32dp"
+                    android:layout_gravity="center_horizontal"
+                    android:tint="@color/lb_cm_white"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_about_logo"
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"/>
+
+
+            <TextView
+                    android:paddingTop="13dp"
+                    android:paddingBottom="74dp"
+                    android:textSize="12sp"
+                    android:text="澳雷古雅权益平台"
+                    android:textColor="@color/lb_cm_white"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_marginTop="-29dp"
+                android:background="@drawable/shape_login_bg"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+        >
+
+
+            <TextView
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="42dp"
+                    android:paddingBottom="42dp"
+                    android:text="登录"
+                    android:textColor="@color/lb_cm_black_font"
+                    android:textSize="22sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+            <EditText
+                    android:textColorHint="@color/edit_text_hint"
+                    android:hint="请输入账号名手机或邮箱"
+                    android:gravity="center"
+                    android:textColor="#1A1A1A"
+                    android:textSize="16sp"
+                    android:background="@drawable/shape_deit_gary_bg"
+                    android:layout_marginLeft="59dp"
+                    android:layout_marginRight="59dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"/>
+
+
+            <EditText
+                    android:layout_marginTop="10dp"
+                    android:textColorHint="@color/edit_text_hint"
+                    android:hint="请输入密码"
+                    android:gravity="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp"
+                    android:background="@drawable/shape_deit_gary_bg"
+                    android:layout_marginLeft="59dp"
+                    android:layout_marginRight="59dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"/>
+
+
+            <com.yu.common.ui.DelayClickImageView
+                    android:layout_marginTop="47dp"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="centerCrop"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/ic_login_botton"/>
+
+
+            <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.yu.common.ui.DelayClickTextView
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/text_color"
+                        android:text="注册"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:textColor="@color/text_color"
+                        android:text="  ·  "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                <com.yu.common.ui.DelayClickTextView
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/text_color"
+                        android:text="忘记密码"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <FrameLayout
+                    android:layout_marginBottom="4dp"
+                    android:clipChildren="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                        android:gravity="center_horizontal|bottom"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:id="@+id/sim_bg"
+                        android:layout_marginRight="43dp"
+                        android:layout_marginLeft="43dp"
+                        android:background="@drawable/shape_gary_solid_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="85dp">
+
+                    <com.yu.common.ui.DelayClickImageView
+                            android:src="@drawable/ic_sim"
+                            android:scaleType="centerCrop"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"/>
+                    <TextView
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="13dp"
+                            android:textSize="12sp"
+                            android:textColor="#6D7173"
+                            android:text="SIM登录"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                        android:textSize="13sp"
+                        android:textColor="#C2C9CC"
+                        android:layout_above="@+id/sim_bg"
+                        android:gravity="center"
+                        android:background="@color/lb_cm_white"
+                        android:layout_gravity="center_horizontal"
+                        android:text="其他登录"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>
