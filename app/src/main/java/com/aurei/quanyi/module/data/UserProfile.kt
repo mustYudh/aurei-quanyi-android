@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.TextUtils
 import com.aurei.quanyi.getAppContext
 import com.aurei.quanyi.module.login.bean.UserInfo
-import com.xuexiang.xhttp2.cookie.CookieManager
 import com.yu.common.base.SharedPreferencesHelper
 import java.io.Serializable
 
@@ -13,9 +12,8 @@ object UserProfile : Serializable {
 
     private var spHelper: SharedPreferencesHelper? = null
     private const val SHARE_PREFERENCES_NAME = ".user_profile"
-    private const val USER_ID = "user_id"
-    private const val COMPANY_ID = "company_id"
-    private const val MOBILE = "mobile"
+    private const val TOKEN = "token"
+    private const val ACCOUNT = "account"
 
 
     init {
@@ -26,47 +24,36 @@ object UserProfile : Serializable {
 
 
     fun login(userInfo: UserInfo?) {
-
+        token = userInfo?.token
+        account = userInfo?.account
     }
 
 
-    var userID: String? = null
+    var token: String? = null
         get() {
-            field = spHelper?.getString(USER_ID, "")!!
+            field = spHelper?.getString(TOKEN, "")!!
             return field
         }
         set(value) {
-            spHelper?.putString(USER_ID, value).toString()
+            spHelper?.putString(TOKEN, value).toString()
         }
 
 
-    var companyId: String? = null
+    var account: String? = null
         get() {
-            field = spHelper?.getString(COMPANY_ID, "")
+            field = spHelper?.getString(ACCOUNT, "")
             return field
         }
         set(value) {
-            spHelper?.putString(COMPANY_ID, value).toString()
-        }
-
-    var mobile: String? = null
-        get() {
-            field = spHelper?.getString(MOBILE, "")
-            return field
-        }
-        set(value) {
-            spHelper?.putString(MOBILE, value).toString()
+            spHelper?.putString(ACCOUNT, value).toString()
         }
 
 
-    var isLogin: Boolean = !TextUtils.isEmpty(userID) && !TextUtils.isEmpty(companyId)
+    var isLogin: Boolean = !TextUtils.isEmpty(token) && !TextUtils.isEmpty(account)
 
 
     fun clean() {
-        userID = ""
-        companyId = ""
         spHelper?.clear()
-        CookieManager.getInstance(getAppContext()).removeAll()
     }
 
 }

@@ -235,7 +235,7 @@ public final class HttpUtils {
      * @return
      */
     public static Response getErrorResponse(Response oldResponse, int code, String message) {
-        ApiResult apiResult = new ApiResult().setCode(code).setMsg(message);
+        ApiResult apiResult = new ApiResult().setCode(code).setMessage(message);
         return oldResponse.newBuilder().body(HttpUtils.getJsonResponseBody(new Gson().toJson(apiResult))).build();
     }
 

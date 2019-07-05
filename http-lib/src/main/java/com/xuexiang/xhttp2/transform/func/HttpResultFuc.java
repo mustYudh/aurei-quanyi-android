@@ -34,9 +34,9 @@ public class HttpResultFuc<T> implements Function<ApiResult<T>, T> {
     @Override
     public T apply(@NonNull ApiResult<T> response) throws Exception {
         if (ApiException.isSuccess(response)) {
-            return response.getData();
+            return response.getResult();
         } else {
-            throw new ServerException(response.getCode(), response.getMsg());
+            throw new ServerException(response.getCode(), response.getMessage());
         }
     }
 }

@@ -87,24 +87,24 @@ public class ApiResultFunc<T> implements Function<ResponseBody, ApiResult<T>> {
             try {
                 String json = responseBody.string();
                 if (keepJson && !List.class.isAssignableFrom(rawType) && clazz.equals(String.class)) {
-                    apiResult.setData((T) json);
+                    apiResult.setResult((T) json);
                     apiResult.setCode(0);
                 } else {
                     ApiResult result = gson.fromJson(json, type);
                     if (result != null) {
                         return result;
                     } else {
-                        apiResult.setMsg("json is null");
+                        apiResult.setMessage("json is null");
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                apiResult.setMsg(e.getMessage());
+                apiResult.setMessage(e.getMessage());
             } finally {
                 responseBody.close();
             }
         } else {
-            apiResult.setMsg("ApiResult.class.isAssignableFrom(cls) err!!");
+            apiResult.setMessage("ApiResult.class.isAssignableFrom(cls) err!!");
         }
         return apiResult;
     }
@@ -115,28 +115,28 @@ public class ApiResultFunc<T> implements Function<ResponseBody, ApiResult<T>> {
             final String json = responseBody.string();
             final Class<T> clazz = TypeUtils.getClass(type, 0);
             if (keepJson && clazz.equals(String.class)) {
-                apiResult.setData((T) json);
+                apiResult.setResult((T) json);
                 apiResult.setCode(0);
             } else {
                 final ApiResult result = parseApiResult(json, apiResult);
                 if (result != null) {
                     apiResult = result;
-                    if (apiResult.getData() != null) {
-                        T data = gson.fromJson(apiResult.getData().toString(), clazz);
-                        apiResult.setData(data);
+                    if (apiResult.getResult() != null) {
+                        T data = gson.fromJson(apiResult.getResult().toString(), clazz);
+                        apiResult.setResult(data);
                     } else {
-                        apiResult.setMsg("ApiResult's data is null");
+                        apiResult.setMessage("ApiResult's data is null");
                     }
                 } else {
-                    apiResult.setMsg("json is null");
+                    apiResult.setMessage("json is null");
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            apiResult.setMsg(e.getMessage());
+            apiResult.setMessage(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            apiResult.setMsg(e.getMessage());
+            apiResult.setMessage(e.getMessage());
         } finally {
             responseBody.close();
         }
@@ -160,10 +160,10 @@ public class ApiResultFunc<T> implements Function<ResponseBody, ApiResult<T>> {
             apiResult.setCode(jsonObject.getInt(CODE));
         }
         if (jsonObject.has(DATA)) {
-            apiResult.setData(jsonObject.getString(DATA));
+            apiResult.setResult(jsonObject.getString(DATA));
         }
         if (jsonObject.has(MSG)) {
-            apiResult.setMsg(jsonObject.getString(MSG));
+            apiResult.setMessage(jsonObject.getString(MSG));
         }
         return apiResult;
     }

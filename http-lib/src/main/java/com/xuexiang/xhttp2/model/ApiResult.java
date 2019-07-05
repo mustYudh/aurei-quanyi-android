@@ -24,12 +24,12 @@ package com.xuexiang.xhttp2.model;
  */
 public class ApiResult<T> {
     public final static String CODE = "code";
-    public final static String MSG = "msg";
-    public final static String DATA = "data";
+    public final static String MSG = "message";
+    public final static String DATA = "result";
 
     private int code;
-    private String msg;
-    private T data;
+    private String message;
+    private T result;
 
     public int getCode() {
         return code;
@@ -40,17 +40,17 @@ public class ApiResult<T> {
         return this;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public ApiResult setMsg(String msg) {
-        this.msg = msg;
+    public ApiResult setMessage(String message) {
+        this.message = message;
         return this;
     }
 
-    public ApiResult setData(T data) {
-        this.data = data;
+    public ApiResult setResult(T result) {
+        this.result = result;
         return this;
     }
 
@@ -59,8 +59,8 @@ public class ApiResult<T> {
      *
      * @return
      */
-    public T getData() {
-        return data;
+    public T getResult() {
+        return result;
     }
 
     /**
@@ -69,15 +69,15 @@ public class ApiResult<T> {
      * @return
      */
     public boolean isSuccess() {
-        return getCode() == 0;
+        return getCode() == 200;
     }
 
     @Override
     public String toString() {
         return "ApiResult{" +
                 "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
+                ", message='" + message + '\'' +
+                ", result=" + result +
                 '}';
     }
 }

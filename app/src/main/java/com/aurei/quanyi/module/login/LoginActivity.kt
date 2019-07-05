@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
 
 
     companion object {
-        private var loginCallBack: () -> Unit = {}
+        private var loginCallBack: (() -> Unit)? = null
         fun getIntent(context: Context,call: () -> Unit) {
             this.loginCallBack  = call
         }

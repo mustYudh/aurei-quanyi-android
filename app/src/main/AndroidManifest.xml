@@ -12,7 +12,8 @@
             android:theme="@style/AppStyle"
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".module.splash.SplashActivity"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+        />
         <activity android:name=".module.login.LoginActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
                   android:hardwareAccelerated="false"

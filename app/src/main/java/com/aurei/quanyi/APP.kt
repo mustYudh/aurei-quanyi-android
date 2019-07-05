@@ -5,7 +5,6 @@ import com.qianchang.optimizetax.http.interceptor.CustomDynamicInterceptor
 import com.qianchang.optimizetax.http.interceptor.CustomLoggingInterceptor
 import com.xuexiang.xhttp2.XHttp
 import com.xuexiang.xhttp2.XHttpSDK
-import com.xuexiang.xhttp2.cookie.CookieManager
 import com.xuexiang.xhttp2.model.HttpHeaders
 import com.yu.common.base.BaseApp
 
@@ -27,9 +26,12 @@ class APP : BaseApp() {
     private fun initHttp() {
         XHttpSDK.init(this)
         XHttpSDK.debug()
+
         //自定义日志拦截器
         XHttpSDK.debug(CustomLoggingInterceptor())
         XHttpSDK.setBaseUrl(getBaseUrl())
+
+
 
 //    XHttpSDK.setSubUrl(getSubUrl())
 
@@ -41,7 +43,6 @@ class APP : BaseApp() {
         XHttp.getInstance().setRetryCount(3)
         //添加全局公共请求参数
         XHttp.getInstance().addCommonHeaders(getHttpHeaders())
-        XHttp.getInstance().setCookieStore(CookieManager.getInstance(this))
     }
 
 
@@ -53,7 +54,7 @@ class APP : BaseApp() {
     private fun getBaseUrl(): String {
         //http://172.90.14.241:8081
         //"http://tax-saving-member.int.qianli.com.cn"
-        return "https://m.aurei.cc:8081"
+        return "http://m.aurei.cc:8081"
 
     }
 }
