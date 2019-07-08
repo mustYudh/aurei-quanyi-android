@@ -34,4 +34,6 @@ dependencies {
     implementation project(path: ':common')
     implementation project(path: ':http-lib')
     implementation project(':share')
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:2.2.3'
 }

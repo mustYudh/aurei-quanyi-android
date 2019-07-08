@@ -1,7 +1,19 @@
 package com.aurei.quanyi.module.web.js
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
+import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import com.aurei.quanyi.module.login.LoginActivity
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+import com.qianchang.optimizetax.data.UserProfile
+import com.tbruyelle.rxpermissions2.RxPermissions
+import com.yu.common.launche.LauncherHelper
 
 /**
  * @author chenwei
@@ -9,5 +21,92 @@ import android.webkit.WebView
  */
 class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView) {
 
+    //退出登录
+    @JavascriptInterface
+    fun logout() {
+        UserProfile.clean()
+        LauncherHelper.from(activity).startActivity(LoginActivity::class.java)
+    }
+
+    // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
+    @JavascriptInterface
+    fun goBack(delta: Int) {
+        if (webView.canGoBack() && webView.canGoBackOrForward(delta)) {
+            webView.goBackOrForward(delta)
+        }
+    }
+
+    //拍照
+    @SuppressLint("CheckResult")
+    @JavascriptInterface
+    fun getPhoto(callBack: String) {
+//        getPermission {
+//            PictureSelector.create(activity)
+//                .openCamera(PictureMimeType.ofImage())
+//                .enableCrop(true)
+//                .compress(true)
+//                .forResult(PictureConfig.CHOOSE_REQUEST)
+//        }
+//        Log.e("=====>结果",callBack)
+        PictureSelector.create(activity)
+            .openGallery(PictureMimeType.ofImage())
+//            .theme(R.style.PictureSelector)
+            .maxSelectNum(1)
+            .imageSpanCount(4)
+            .previewImage(true)
+            .isCamera(false)
+            .imageFormat(PictureMimeType.PNG)
+            .isZoomAnim(true)
+            .sizeMultiplier(0.5f)
+            .enableCrop(false)
+            .compress(true)
+            .hideBottomControls(false)
+            .isGif(false)
+            .openClickSound(false)
+            .previewEggs(true)
+            .minimumCompressSize(100)
+            .forResult(PictureConfig.CHOOSE_REQUEST)
+        Log.e("=====>结果", callBack)
+    }
+
+//    //相册选择照片
+//    @JavascriptInterface
+//    fun selectPhoto() {
+//        PictureSelector.create(activity)
+//            .openGallery(PictureMimeType.ofImage())
+////            .theme(R.style.PictureSelector)
+//            .maxSelectNum(1)
+//            .imageSpanCount(4)
+//            .previewImage(true)
+//            .isCamera(false)
+//            .imageFormat(PictureMimeType.PNG)
+//            .isZoomAnim(true)
+//            .sizeMultiplier(0.5f)
+//            .enableCrop(false)
+//            .compress(true)
+//            .hideBottomControls(false)
+//            .isGif(false)
+//            .openClickSound(false)
+//            .previewEggs(true)
+//            .minimumCompressSize(100)
+//            .forResult(PictureConfig.CHOOSE_REQUEST)
+//    }
+
+
+    @SuppressLint("CheckResult")
+    private fun getPermission(result: (success: Boolean) -> Unit) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            val rxPermissions = RxPermissions(activity!!)
+            rxPermissions.request(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).subscribe { granted ->
+                result(granted)
+            }
+        } else {
+            result(true)
+        }
+    }
 
 }
