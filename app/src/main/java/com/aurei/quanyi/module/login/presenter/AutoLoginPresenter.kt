@@ -1,10 +1,14 @@
 package com.aurei.quanyi.module.login.presenter
 
+import android.app.Activity
+import android.util.Log
 import cn.com.chinatelecom.account.sdk.AuthPageConfig
 import cn.com.chinatelecom.account.sdk.CtAuth
 import com.aurei.quanyi.R
 import com.aurei.quanyi.http.loading.NetLoadingDialog
+import com.aurei.quanyi.showToast
 import com.yu.common.framework.BaseViewPresenter
+import org.json.JSONObject
 
 
 /**
@@ -13,7 +17,7 @@ import com.yu.common.framework.BaseViewPresenter
  */
 class AutoLoginPresenter(viewer: AutoLoginViewer) : BaseViewPresenter<AutoLoginViewer>(viewer) {
     fun requestPreLogin() {
-        NetLoadingDialog.showLoading(activity, false)
+        NetLoadingDialog.showLoading(activity!!, false)
         CtAuth.getInstance().requestPreLogin(null) {
             NetLoadingDialog.dismissLoading()
             val configBuilder = AuthPageConfig.Builder()
@@ -54,6 +58,26 @@ class AutoLoginPresenter(viewer: AutoLoginViewer) : BaseViewPresenter<AutoLoginV
             val authPageConfig = configBuilder.build()
 
             CtAuth.getInstance().openAuthActivity(activity, authPageConfig) { result ->
+                val json = JSONObject(result)
+                val code = json.optInt("result")
+                val message = json.optString("msg")
+                val data = json.optJSONObject("data")
+                when (code) {
+                    80201 -> activity.finish()
+                    0 -> {
+                        if (data != null) {
+                            val accessCode: String = data.optString("accessCode")
+                            val expiredTime: Long = data.optLong("expiredTime")
+                            val operatorType: String = data.optString("operatorType")
+                            val authCode: String = data.optString("authCode")
+                            Log.e("======>","accessCode:$accessCode,expiredTime:$expiredTime,operatorType:$operatorType,authCode:$authCode")
+                        }
+                        activity.setResult(Activity.RESULT_OK)
+                        activity.finish()
+
+                    }
+                    else -> showToast(message)
+                }
                 CtAuth.getInstance().finishAuthActivity()
             }
         }

@@ -1,6 +1,8 @@
 package com.aurei.quanyi.module.login
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -19,7 +21,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
 
     @PresenterLifeCycle
     private val mPresenter = LoginPresenter(this)
-
+    private val OPEN_AUTO_LOGIN_REQUEST_CODE = 1
 
 
     override fun setView(savedInstanceState: Bundle?) {
@@ -60,11 +62,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
                 launchHelper.startActivity(WebViewActivity.callIntent(activity, "https://www.baidu.com"))
             }
             R.id.sim_login -> {
-                launchHelper.startActivity(AutoLoginActivity::class.java)
+                launchHelper.startActivityForResult(AutoLoginActivity::class.java,OPEN_AUTO_LOGIN_REQUEST_CODE)
             }
             R.id.back -> {
                 finish()
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == OPEN_AUTO_LOGIN_REQUEST_CODE) {
+            finish()
         }
     }
 

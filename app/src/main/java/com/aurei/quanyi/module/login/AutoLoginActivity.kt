@@ -38,6 +38,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
         title = "SIM登录"
         initView()
         unified_argument_btn.setOnClickListener(this)
+        unified_argument_btn.isSelected = true
         what_is_avoid_close_login.setOnClickListener(this)
         login.setOnClickListener(this)
         problem.setOnClickListener(this)

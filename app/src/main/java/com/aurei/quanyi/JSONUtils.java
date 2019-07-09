@@ -766,7 +766,7 @@ public final class JSONUtils {
     return null;
   }
 
-  public static <T> T parseJsonToBean(String json, Class<T> cls) {
+  public static <T> T parseJsonToBean(String json) {
     Gson gson = new Gson();
     T t = null;
     try {

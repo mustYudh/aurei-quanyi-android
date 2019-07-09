@@ -28,9 +28,9 @@ class APP : BaseApp() {
 
 
     //请在天翼账号开放平台申请应用的APPID
-    val APPID = "8148613147"
+    val APPID = "8025208769"
     //请在天翼账号开放平台申请应用的APPSECRET
-    val APPSECRET = "iumiPldXIOW8eRM0jJHT6QH7gyZGpDQV"
+    val APPSECRET = "is6DW9yGO6s3nsewIyZhUqtRO8tnN4YO"
 
     private fun initHttp() {
         XHttpSDK.init(this)
