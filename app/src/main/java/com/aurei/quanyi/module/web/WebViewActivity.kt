@@ -113,7 +113,10 @@ class WebViewActivity : BaseActivity(),WebViewViewer {
     }
 
     override fun uploadImageSuccess(url: String) {
-        webView?.loadUrl("javascript:getPhotoSuccess($url)")
+        Thread(Runnable {
+            webView?.loadUrl("javascript:getPhotoSuccess($url)")
+        })
+
     }
 
 }

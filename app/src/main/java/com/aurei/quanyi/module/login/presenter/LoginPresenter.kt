@@ -9,6 +9,7 @@ import com.aurei.quanyi.utils.goHome
 import com.aurei.quanyi.utils.showToast
 import com.qianchang.optimizetax.data.UserProfile
 import com.qianchang.optimizetax.http.subscriber.TipRequestSubscriber
+import com.qianli.housekeeper.data.PublicProfile
 import com.xuexiang.xhttp2.XHttpProxy
 import com.yu.common.framework.BaseViewPresenter
 
@@ -34,6 +35,7 @@ class LoginPresenter(viewer: LoginViewer) : BaseViewPresenter<LoginViewer>(viewe
             .subscribeWith(object : TipRequestSubscriber<UserInfo>() {
                 override fun onSuccess(t: UserInfo?) {
                     t?.account = account
+                    PublicProfile.userAccount = account
                     Log.e("=====>token", t?.token)
                     UserProfile.login(t)
                     if (call != null) {

@@ -2,8 +2,8 @@ package com.qianchang.optimizetax.data
 
 import android.content.Context
 import android.text.TextUtils
-import com.aurei.quanyi.utils.getAppContext
 import com.aurei.quanyi.module.login.bean.UserInfo
+import com.aurei.quanyi.utils.getAppContext
 import com.yu.common.base.SharedPreferencesHelper
 import java.io.Serializable
 
