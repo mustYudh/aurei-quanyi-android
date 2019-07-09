@@ -9,9 +9,12 @@ import android.view.KeyEvent
 import android.webkit.WebView
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
+import com.aurei.quanyi.module.web.bea.UploadInfo
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
+import com.aurei.quanyi.utils.showToast
+import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.yu.common.mvp.PresenterLifeCycle
@@ -22,7 +25,7 @@ import java.io.File
 /**
  * @author yudneghao
  */
-class WebViewActivity : BaseActivity(),WebViewViewer {
+class WebViewActivity : BaseActivity(), WebViewViewer {
 
 
     private var webView: WebView? = null
@@ -112,11 +115,9 @@ class WebViewActivity : BaseActivity(),WebViewViewer {
         }
     }
 
-    override fun uploadImageSuccess(url: String) {
-        Thread(Runnable {
-            webView?.loadUrl("javascript:getPhotoSuccess($url)")
-        })
-
+    override fun uploadImageSuccess(url: UploadInfo?) {
+        showToast("上传成功")
+        webView?.loadUrl("javascript:getPhotoSuccess(${Gson().toJson(url)})")
     }
 
 }

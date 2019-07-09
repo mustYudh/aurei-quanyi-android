@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.EditText
 import com.aurei.quanyi.APP
 import com.aurei.quanyi.module.web.WebViewActivity
+import com.qianchang.optimizetax.data.UserProfile
 import com.yu.common.launche.LauncherHelper
 import com.yu.common.toast.ToastUtils
 
@@ -31,5 +32,5 @@ fun EditText.getEditText(): String {
 }
 
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://172.90.14.232:8080/#/bridge"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://129.28.196.121:8080/#/index?access_token=${UserProfile.token}"))
 }

@@ -27,7 +27,7 @@ class WebViewPresenter(viewer: WebViewViewer) : BaseViewPresenter<WebViewViewer>
             .compose(RxLifecycle.with(activity).bindToLifecycle<UploadInfo>()).subscribeWith(
                 object : TipRequestSubscriber<UploadInfo>() {
                     override fun onSuccess(t: UploadInfo?) {
-                        getViewer()?.uploadImageSuccess(t?.url!!)
+                        getViewer()?.uploadImageSuccess(t)
                         NetLoadingDialog.dismissLoading()
                     }
 
