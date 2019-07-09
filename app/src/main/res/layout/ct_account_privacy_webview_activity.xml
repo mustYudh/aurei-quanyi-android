@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <!-- 头部导航栏布局 -->
+    <RelativeLayout
+                    android:id="@+id/ct_account_webview_goback"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_height="45dp"
+                    android:orientation="vertical"
+                    >
+
+
+        <com.yu.common.ui.BarIconContainer
+                android:id="@+id/back"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:bar_icon="@drawable/ic_back"/>
+
+
+        <LinearLayout
+                android:id="@+id/action_bar_center_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+        >
+
+            <com.yu.common.ui.DelayClickTextView
+                    android:text="服务与隐私协议"
+                    android:id="@+id/action_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:maxWidth="190dp"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+            />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/ct_account_progressbar_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="2.5dip"
+        android:progressDrawable="@drawable/lb_cm_shape_web_view_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+
+    <!-- WebView 用于展示《服务与隐私协议》的内容-->
+    <WebView
+        android:id="@+id/ct_account_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.aurei.quanyi
 
 import android.content.Context
+import cn.com.chinatelecom.account.sdk.CtAuth
 import com.qianchang.optimizetax.http.interceptor.CustomDynamicInterceptor
 import com.qianchang.optimizetax.http.interceptor.CustomLoggingInterceptor
 import com.xuexiang.xhttp2.XHttp
@@ -15,6 +16,8 @@ import com.yu.common.base.BaseApp
 class APP : BaseApp() {
     companion object {
         var appContext: Context? = null
+        private const val NET_TYPE = BuildConfig.API_MODE
+        const val DEBUG: Boolean = NET_TYPE == 0 || NET_TYPE == 2
     }
 
     override fun onCreate() {
@@ -23,6 +26,12 @@ class APP : BaseApp() {
         initHttp()
     }
 
+
+    //请在天翼账号开放平台申请应用的APPID
+    val APPID = "8148613147"
+    //请在天翼账号开放平台申请应用的APPSECRET
+    val APPSECRET = "iumiPldXIOW8eRM0jJHT6QH7gyZGpDQV"
+
     private fun initHttp() {
         XHttpSDK.init(this)
         XHttpSDK.debug()
@@ -30,7 +39,7 @@ class APP : BaseApp() {
         //自定义日志拦截器
         XHttpSDK.debug(CustomLoggingInterceptor())
         XHttpSDK.setBaseUrl(getBaseUrl())
-
+        CtAuth.getInstance().init(getAppContext(), APPID, APPSECRET, DEBUG)
 
 
 //    XHttpSDK.setSubUrl(getSubUrl())
@@ -52,9 +61,15 @@ class APP : BaseApp() {
     }
 
     private fun getBaseUrl(): String {
-        //http://172.90.14.241:8081
-        //"http://tax-saving-member.int.qianli.com.cn"
-        return "http://m.aurei.cc:8081"
-
+        return when (BuildConfig.API_MODE) {
+            0 -> {
+                "http://tax-saving-app-member.int.qianli-inc.com"
+            }
+            1 -> {
+                "https://tax-saving-member-jar.51youshui.com"
+            }
+            else ->
+                "https://tax-saving-member-jar.51youshui.com"
+        }
     }
 }

@@ -7,11 +7,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
 
+    <!--免密登录-->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
             android:name=".APP"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
+            android:label="${APP_NAME}"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppStyle"
@@ -41,6 +48,17 @@
 
         <activity android:name=".module.login.AutoLoginActivity"
                   android:screenOrientation="portrait"/>
+
+        <activity
+                android:name="cn.com.chinatelecom.account.sdk.ui.AuthActivity"
+                android:exported="false"
+                android:theme="@style/authActivityTheme"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name="cn.com.chinatelecom.account.sdk.ui.PrivacyWebviewActivity"
+                android:exported="false"
+                android:theme="@style/authActivityTheme"
+                android:screenOrientation="portrait" />
     </application>
 
 </manifest>

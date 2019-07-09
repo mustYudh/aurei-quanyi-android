@@ -11,8 +11,11 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseBarActivity
+import com.aurei.quanyi.module.login.presenter.AutoLoginPresenter
+import com.aurei.quanyi.module.login.presenter.AutoLoginViewer
 import com.aurei.quanyi.module.web.WebViewActivity
 import com.aurei.quanyi.showToast
+import com.yu.common.mvp.PresenterLifeCycle
 import kotlinx.android.synthetic.main.activity_auto_login_layout.*
 
 
@@ -20,8 +23,10 @@ import kotlinx.android.synthetic.main.activity_auto_login_layout.*
  * @author yudneghao
  * @date 2019-07-09
  */
-class AutoLoginActivity : BaseBarActivity(), View.OnClickListener {
-    private var isAgree = false
+class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewer {
+    @PresenterLifeCycle
+    private val mPresenter = AutoLoginPresenter(this)
+    private var isAgree = true
 
 
     override fun setView(savedInstanceState: Bundle?) {
@@ -41,6 +46,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener {
 
     private fun initView() {
         val str = "登录即同意《服务与隐私协议》，并授权澳雷 古雅获取本机号码"
+        unified_argument.isSelected = true
         val spannableBuilder = SpannableStringBuilder(str)
         val colorSpan = ForegroundColorSpan(Color.parseColor("#47BBED"))
         spannableBuilder.setSpan(colorSpan, 5, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -72,9 +78,9 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener {
             }
             R.id.login -> {
                 if (isAgree) {
-                    showToast("免密登录")
+                    mPresenter.requestPreLogin()
                 } else {
-                    showToast("请确认《服务与隐私协议》")
+                    showToast("请先确认《服务与隐私协议》")
                 }
             }
             R.id.problem -> {

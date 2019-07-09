@@ -4,22 +4,121 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
+enum ApiEnvEnum {
+    DEV(0, "权益会测试"), ONLINE(1, "权益"), PRE_RELEASE(2, "权益预发")
+
+    private final int value
+    private final String name
+
+    ApiEnvEnum(int value, String name) {
+        this.value = value
+        this.name = name
+    }
+
+    int getValue() {
+        value
+    }
+
+    String getName() {
+        name
+    }
+}
+
+
+
 android {
+
+    def envStr = project.hasProperty('API_MODE') ? API_MODE : "DEV"
+    def appNameStr = (envStr as ApiEnvEnum).name
+
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.aurei.quanyi"
+        applicationId rootProject.ext.applicationId
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        flavorDimensions "versionCode"
+        multiDexEnabled true
+        buildConfigField("int", "API_MODE", "${(envStr as ApiEnvEnum).value}")
+        manifestPlaceholders = [ APP_NAME      : appNameStr]
     }
-    buildTypes {
+
+    signingConfigs {
+        debug {
+            storeFile file('../keystores/quanyi.jks')
+            storePassword 'asdfghjkl'
+            keyAlias 'quanyi'
+            keyPassword 'asdfghjkl'
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            storeFile file('../keystores/quanyi.jks')
+            storePassword 'asdfghjkl'
+            keyAlias 'quanyi'
+            keyPassword 'asdfghjkl'
+            v2SigningEnabled true
         }
     }
+
+
+    productFlavors {
+        quanyi {
+            applicationId rootProject.ext.applicationId
+            manifestPlaceholders = [APP_NAME      : appNameStr]
+        }
+    }
+
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFileAbsolutePath = output.outputFileName
+            def isRelease = outputFileAbsolutePath.indexOf("release")
+            outputFileName = isRelease >= 0 ? "app-release.apk" : "app-debug.apk"
+        }
+
+        variant.outputs.all { output ->
+            def versionCodes = ["armeabi-v7a": 1]
+            def abi = output.getFilter(com.android.build.OutputFile.ABI)
+            if (abi != null) {
+                output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            }
+        }
+    }
+
+
+    buildTypes {
+
+        def defaultProguardRule = 'proguard-rules.pro'
+        def proguardBaseRule = '../proguard-rule/proguard-rules-base.pro'
+        def proguardReacNativeRule = '../proguard-rule/proguard-rules-react-native-0.46.0.pro'
+        def proguardRemoveLogRule = '../proguard-rule/proguard-rules-remove-logs.pro'
+        def proguardThirdPartServiceRule = '../proguard-rule/proguard-rules-third-part-service.pro'
+        def proguardUmengSharedRule = '../proguard-rule/proguard-rules-umeng-share.pro'
+
+        debug {
+            crunchPngs false //关闭crunchPng优化, 以加快构建
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+
+        release {
+            productFlavors.quanyi.signingConfig signingConfigs.release
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), defaultProguardRule,
+                    proguardBaseRule, proguardReacNativeRule,
+                    proguardRemoveLogRule,
+                    proguardThirdPartServiceRule,
+                    proguardUmengSharedRule
+        }
+    }
+
+
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -28,6 +127,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'CTAccountSdk_HY_v3.6.1_armeabi', ext: 'aar')
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -40,4 +140,11 @@ dependencies {
     implementation project(':share')
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:2.2.3'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+    flatDir {
+        dirs 'libs'
+    }
 }
