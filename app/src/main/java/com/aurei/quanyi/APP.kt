@@ -63,13 +63,13 @@ class APP : BaseApp() {
     private fun getBaseUrl(): String {
         return when (BuildConfig.API_MODE) {
             0 -> {
-                "http://tax-saving-app-member.int.qianli-inc.com"
+                "http://m.aurei.cc:8081"
             }
             1 -> {
-                "https://tax-saving-member-jar.51youshui.com"
+                "https://m.aurei.cc:8081"
             }
             else ->
-                "https://tax-saving-member-jar.51youshui.com"
+                "https://m.aurei.cc:8081"
         }
     }
 }

@@ -4,22 +4,31 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.webkit.WebView
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.js.WebJs
+import com.aurei.quanyi.module.web.presenter.WebViewPresenter
+import com.aurei.quanyi.module.web.presenter.WebViewViewer
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
+import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
+import java.io.File
 
 /**
  * @author yudneghao
  */
-class WebViewActivity : BaseActivity() {
+class WebViewActivity : BaseActivity(),WebViewViewer {
+
+
     private var webView: WebView? = null
     private var webJs: WebJs? = null
+    @PresenterLifeCycle
+    private val mPresenter = WebViewPresenter(this)
 
 
     override fun setView(savedInstanceState: Bundle?) {
@@ -96,12 +105,15 @@ class WebViewActivity : BaseActivity() {
         if (resultCode == RESULT_OK) {
             if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 val selectList = PictureSelector.obtainMultipleResult(data)
-                if (selectList.size > 0) {
-                    webView?.loadUrl("javascript:getPhoneSuccess(" + selectList[0].compressPath + ")")
+                if (selectList.size > 0 && !TextUtils.isEmpty(selectList[0].compressPath)) {
+                    mPresenter.uploadImage(File(selectList[0].compressPath))
                 }
             }
         }
     }
 
+    override fun uploadImageSuccess(url: String) {
+        webView?.loadUrl("javascript:getPhotoSuccess($url)")
+    }
 
 }

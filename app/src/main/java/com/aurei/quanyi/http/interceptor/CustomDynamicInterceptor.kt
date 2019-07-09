@@ -1,5 +1,6 @@
 package com.qianchang.optimizetax.http.interceptor
 
+import com.qianchang.optimizetax.data.UserProfile
 import com.xuexiang.xhttp2.interceptor.BaseDynamicInterceptor
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -10,6 +11,7 @@ import java.util.*
  * @date 2019/4/19
  * 自定义动态添加请求参数的拦截器
  */
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class CustomDynamicInterceptor : BaseDynamicInterceptor<CustomDynamicInterceptor>() {
 
 
@@ -17,9 +19,17 @@ class CustomDynamicInterceptor : BaseDynamicInterceptor<CustomDynamicInterceptor
     return dynamicMap
   }
 
-
   override fun intercept(chain: Interceptor.Chain): Response {
-    return super.intercept(chain)
+    val request = chain.request()
+    return if (UserProfile.isLogin) {
+      chain.proceed(request
+        .newBuilder()
+        .post(request.body())
+        .addHeader("X-Access-Token",UserProfile.token).build())
+    } else{
+      super.intercept(chain)
+    }
+
   }
 }
 

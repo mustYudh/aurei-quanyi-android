@@ -2,8 +2,10 @@ package com.aurei.quanyi.module.login.presenter
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
+import android.util.Log
 import com.aurei.quanyi.http.api.ApiServices
 import com.aurei.quanyi.module.login.bean.UserInfo
+import com.aurei.quanyi.module.web.WebViewActivity
 import com.aurei.quanyi.showToast
 import com.qianchang.optimizetax.data.UserProfile
 import com.qianchang.optimizetax.http.subscriber.TipRequestSubscriber
@@ -31,12 +33,15 @@ class LoginPresenter(viewer: LoginViewer) : BaseViewPresenter<LoginViewer>(viewe
             .login(account, password)
             .subscribeWith(object : TipRequestSubscriber<UserInfo>() {
                 override fun onSuccess(t: UserInfo?) {
+                    t?.account = account
+                    Log.e("=====>token",t?.token)
                     UserProfile.login(t)
                     if (call != null) {
 
                     } else {
-                        activity?.finish()
+                        launchHelper.startActivity(WebViewActivity.callIntent(activity,"http://172.90.14.232:8080/#/bridge"))
                     }
+                    activity?.finish()
                 }
             })
     }

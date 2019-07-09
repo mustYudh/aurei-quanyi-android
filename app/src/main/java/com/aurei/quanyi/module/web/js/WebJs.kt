@@ -5,9 +5,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.util.Log
+import android.view.KeyEvent
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
+import com.aurei.quanyi.utils.PressHandle
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -31,8 +33,14 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
     @JavascriptInterface
     fun goBack(delta: Int) {
-        if (webView.canGoBack() && webView.canGoBackOrForward(delta)) {
+        if (webView.canGoBackOrForward(delta)) {
             webView.goBackOrForward(delta)
+        }
+        if (!webView.canGoBack()) {
+            val pressHandle = PressHandle(activity)
+            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
+                activity?.finish()
+            }
         }
     }
 
@@ -40,14 +48,20 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
     @SuppressLint("CheckResult")
     @JavascriptInterface
     fun getPhoto(callBack: String) {
-//        getPermission {
-//            PictureSelector.create(activity)
-//                .openCamera(PictureMimeType.ofImage())
-//                .enableCrop(true)
-//                .compress(true)
-//                .forResult(PictureConfig.CHOOSE_REQUEST)
-//        }
-//        Log.e("=====>结果",callBack)
+        getPermission {
+            PictureSelector.create(activity)
+                .openCamera(PictureMimeType.ofImage())
+                .enableCrop(true)
+                .compress(true)
+                .forResult(PictureConfig.CHOOSE_REQUEST)
+        }
+        Log.e("=====>结果1", callBack)
+
+    }
+
+    //相册选择照片
+    @JavascriptInterface
+    fun selectPhoto(callBack: String) {
         PictureSelector.create(activity)
             .openGallery(PictureMimeType.ofImage())
 //            .theme(R.style.PictureSelector)
@@ -66,31 +80,8 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
             .previewEggs(true)
             .minimumCompressSize(100)
             .forResult(PictureConfig.CHOOSE_REQUEST)
-        Log.e("=====>结果", callBack)
+        Log.e("=====>结果2", callBack)
     }
-
-//    //相册选择照片
-//    @JavascriptInterface
-//    fun selectPhoto() {
-//        PictureSelector.create(activity)
-//            .openGallery(PictureMimeType.ofImage())
-////            .theme(R.style.PictureSelector)
-//            .maxSelectNum(1)
-//            .imageSpanCount(4)
-//            .previewImage(true)
-//            .isCamera(false)
-//            .imageFormat(PictureMimeType.PNG)
-//            .isZoomAnim(true)
-//            .sizeMultiplier(0.5f)
-//            .enableCrop(false)
-//            .compress(true)
-//            .hideBottomControls(false)
-//            .isGif(false)
-//            .openClickSound(false)
-//            .previewEggs(true)
-//            .minimumCompressSize(100)
-//            .forResult(PictureConfig.CHOOSE_REQUEST)
-//    }
 
 
     @SuppressLint("CheckResult")

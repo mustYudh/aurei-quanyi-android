@@ -49,7 +49,7 @@ object UserProfile : Serializable {
         }
 
 
-    var isLogin: Boolean = !TextUtils.isEmpty(token) && !TextUtils.isEmpty(account)
+    var isLogin: Boolean = !TextUtils.isEmpty(token)
 
 
     fun clean() {

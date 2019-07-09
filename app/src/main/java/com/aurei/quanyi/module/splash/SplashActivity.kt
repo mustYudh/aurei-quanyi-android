@@ -5,7 +5,9 @@ import android.os.Build
 import android.os.Bundle
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
+import com.aurei.quanyi.module.login.LoginActivity
 import com.aurei.quanyi.module.web.WebViewActivity
+import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 
 /**
@@ -32,8 +34,12 @@ class SplashActivity : BaseActivity() {
         } else {
 
         }
-//        launchHelper.startActivity(WebViewActivity.callIntent(activity,""))
-        launchHelper.startActivity(WebViewActivity.callIntent(activity,"http://129.28.196.121:8080/#/bridge"))
+        if (UserProfile.isLogin) {
+            launchHelper.startActivity(WebViewActivity.callIntent(activity,"http://172.90.14.232:8080/#/bridge"))
+        } else {
+            launchHelper.startActivity(LoginActivity::class.java)
+        }
+
     }
 
 }
