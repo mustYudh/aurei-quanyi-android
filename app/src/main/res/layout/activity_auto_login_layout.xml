@@ -75,37 +75,50 @@
             android:layout_height="0.5dp"/>
 
     <LinearLayout
-            android:layout_marginTop="22dp"
             android:layout_marginRight="59dp"
-            android:layout_marginLeft="59dp"
+            android:layout_marginLeft="52dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <com.yu.common.ui.DelayClickImageView
-                android:background="@drawable/ic_check_box_selector"
-                android:layout_width="17dp"
-                android:layout_height="17dp"/>
+        <FrameLayout
+                android:id="@+id/unified_argument_btn"
+                android:padding="7dp"
+                android:layout_marginTop="17dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <com.yu.common.ui.DelayClickImageView
+                    android:id="@+id/unified_argument"
+                    android:background="@drawable/ic_check_box_selector"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"/>
+
+        </FrameLayout>
+
         <TextView
-                android:layout_marginLeft="7dp"
+                android:text="登录即同意《服务与隐私协议》，并授权澳雷 古雅获取本机号码"
+                android:layout_marginTop="22dp"
+                android:id="@+id/login_agreement"
                 android:textColor="#1A1A1A"
                 android:textSize="12sp"
-                android:text="登录即同意《服务与隐私协议》，并授权澳雷 古雅获取本机号码"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
 
 
     <com.yu.common.ui.DelayClickTextView
+            android:id="@+id/what_is_avoid_close_login"
             android:layout_marginTop="16dp"
             android:textColor="@color/app_main_color"
             android:textSize="12sp"
             android:layout_marginLeft="59dp"
             android:textColorHint="@color/app_main_color"
             android:text="什么是免密登录？"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <com.yu.common.ui.DelayClickTextView
+            android:id="@+id/login"
             android:background="@drawable/shape_button_bg"
             android:text="确认授权"
             android:textSize="16sp"
@@ -125,6 +138,7 @@
             android:layout_height="match_parent">
 
         <com.yu.common.ui.DelayClickTextView
+                android:id="@+id/problem"
                 android:textColor="#1A1A1A"
                 android:textSize="12sp"
                 android:text="登录遇到问题"
@@ -132,6 +146,7 @@
                 android:layout_height="wrap_content"/>
 
         <com.yu.common.ui.DelayClickTextView
+                android:id="@+id/normal_login"
                 android:layout_marginLeft="35dp"
                 android:textColor="#1A1A1A"
                 android:textSize="12sp"
