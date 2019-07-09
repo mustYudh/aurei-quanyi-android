@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/action_bar"
+                android:layout_width="match_parent"
+                android:background="@color/app_main_color"
+                android:layout_height="@dimen/action_bar_all_height"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/action_bar_height_top">
+
+
+    <com.yu.common.ui.BarIconContainer
+            android:id="@+id/back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:bar_icon="@drawable/ic_back_white"/>
+
+
+    <LinearLayout
+            android:id="@+id/action_bar_center_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+    >
+
+        <com.yu.common.ui.DelayClickTextView
+                tools:text="编辑资料"
+                android:id="@+id/action_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:maxWidth="190dp"
+                android:textColor="@color/lb_cm_white"
+                android:textSize="16sp"
+        />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
