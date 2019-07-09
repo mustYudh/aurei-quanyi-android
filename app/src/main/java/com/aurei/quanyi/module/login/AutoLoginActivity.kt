@@ -14,7 +14,7 @@ import com.aurei.quanyi.base.BaseBarActivity
 import com.aurei.quanyi.module.login.presenter.AutoLoginPresenter
 import com.aurei.quanyi.module.login.presenter.AutoLoginViewer
 import com.aurei.quanyi.module.web.WebViewActivity
-import com.aurei.quanyi.showToast
+import com.aurei.quanyi.utils.showToast
 import com.yu.common.mvp.PresenterLifeCycle
 import kotlinx.android.synthetic.main.activity_auto_login_layout.*
 

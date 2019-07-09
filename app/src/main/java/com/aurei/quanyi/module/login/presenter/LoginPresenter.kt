@@ -5,8 +5,8 @@ import android.text.TextUtils
 import android.util.Log
 import com.aurei.quanyi.http.api.ApiServices
 import com.aurei.quanyi.module.login.bean.UserInfo
-import com.aurei.quanyi.module.web.WebViewActivity
-import com.aurei.quanyi.showToast
+import com.aurei.quanyi.utils.goHome
+import com.aurei.quanyi.utils.showToast
 import com.qianchang.optimizetax.data.UserProfile
 import com.qianchang.optimizetax.http.subscriber.TipRequestSubscriber
 import com.xuexiang.xhttp2.XHttpProxy
@@ -34,12 +34,12 @@ class LoginPresenter(viewer: LoginViewer) : BaseViewPresenter<LoginViewer>(viewe
             .subscribeWith(object : TipRequestSubscriber<UserInfo>() {
                 override fun onSuccess(t: UserInfo?) {
                     t?.account = account
-                    Log.e("=====>token",t?.token)
+                    Log.e("=====>token", t?.token)
                     UserProfile.login(t)
                     if (call != null) {
 
                     } else {
-                        launchHelper.startActivity(WebViewActivity.callIntent(activity,"http://172.90.14.232:8080/#/bridge"))
+                        goHome(activity)
                     }
                     activity?.finish()
                 }

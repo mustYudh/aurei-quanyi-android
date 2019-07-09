@@ -2,6 +2,7 @@ package com.aurei.quanyi
 
 import android.content.Context
 import cn.com.chinatelecom.account.sdk.CtAuth
+import com.aurei.quanyi.utils.getAppContext
 import com.qianchang.optimizetax.http.interceptor.CustomDynamicInterceptor
 import com.qianchang.optimizetax.http.interceptor.CustomLoggingInterceptor
 import com.xuexiang.xhttp2.XHttp

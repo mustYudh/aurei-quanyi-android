@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.login.LoginActivity
-import com.aurei.quanyi.module.web.WebViewActivity
+import com.aurei.quanyi.utils.goHome
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 
@@ -35,10 +35,11 @@ class SplashActivity : BaseActivity() {
 
         }
         if (UserProfile.isLogin) {
-            launchHelper.startActivity(WebViewActivity.callIntent(activity,"http://172.90.14.232:8080/#/bridge"))
+            goHome(activity)
         } else {
             launchHelper.startActivity(LoginActivity::class.java)
         }
+        finish()
 
     }
 

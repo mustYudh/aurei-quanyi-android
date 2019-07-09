@@ -6,7 +6,7 @@ import cn.com.chinatelecom.account.sdk.AuthPageConfig
 import cn.com.chinatelecom.account.sdk.CtAuth
 import com.aurei.quanyi.R
 import com.aurei.quanyi.http.loading.NetLoadingDialog
-import com.aurei.quanyi.showToast
+import com.aurei.quanyi.utils.showToast
 import com.yu.common.framework.BaseViewPresenter
 import org.json.JSONObject
 

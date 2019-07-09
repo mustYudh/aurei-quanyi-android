@@ -1,7 +1,10 @@
-package com.aurei.quanyi
+package com.aurei.quanyi.utils
 
 import android.content.Context
 import android.widget.EditText
+import com.aurei.quanyi.APP
+import com.aurei.quanyi.module.web.WebViewActivity
+import com.yu.common.launche.LauncherHelper
 import com.yu.common.toast.ToastUtils
 
 /**
@@ -25,4 +28,8 @@ fun getAppContext(): Context? {
 
 fun EditText.getEditText(): String {
     return text.toString().trim()
+}
+
+fun goHome(context: Context) {
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://172.90.14.232:8080/#/bridge"))
 }

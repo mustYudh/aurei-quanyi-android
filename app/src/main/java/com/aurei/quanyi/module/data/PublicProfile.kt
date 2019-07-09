@@ -1,7 +1,7 @@
 package com.qianli.housekeeper.data;
 
 import android.content.Context
-import com.aurei.quanyi.getAppContext
+import com.aurei.quanyi.utils.getAppContext
 import com.yu.common.base.SharedPreferencesHelper
 import java.io.Serializable
 

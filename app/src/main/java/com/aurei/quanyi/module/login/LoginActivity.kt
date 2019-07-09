@@ -8,10 +8,10 @@ import android.text.TextUtils
 import android.view.View
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
-import com.aurei.quanyi.getEditText
 import com.aurei.quanyi.module.login.presenter.LoginPresenter
 import com.aurei.quanyi.module.login.presenter.LoginViewer
 import com.aurei.quanyi.module.web.WebViewActivity
+import com.aurei.quanyi.utils.getEditText
 import com.qianli.housekeeper.data.PublicProfile
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarFontColorUtil
