@@ -3,4 +3,5 @@
     <color name="app_main_color">#FF411A</color>
     <color name="edit_text_hint">#B6BCBF</color>
     <color name="text_color">#1A1A1A</color>
+    <color name="activity_bg">#F0F2F2</color>
 </resources>

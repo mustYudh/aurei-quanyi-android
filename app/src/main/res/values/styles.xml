@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppStyle" parent="@style/BaseTheme">
-        <item name="android:windowBackground">@color/lb_cm_white</item>
+        <item name="android:windowBackground">@color/activity_bg</item>
     </style>
 
 </resources>

@@ -60,7 +60,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
                 launchHelper.startActivity(WebViewActivity.callIntent(activity, "https://www.baidu.com"))
             }
             R.id.sim_login -> {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https://www.baidu.com"))
+                launchHelper.startActivity(AutoLoginActivity::class.java)
             }
             R.id.back -> {
                 finish()

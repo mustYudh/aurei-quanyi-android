@@ -4,7 +4,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/action_bar"
                 android:layout_width="match_parent"
-                android:background="@color/app_main_color"
+                android:background="#F0F2F2"
                 android:layout_height="@dimen/action_bar_all_height"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/action_bar_height_top">
@@ -14,7 +14,7 @@
             android:id="@+id/back"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:bar_icon="@drawable/ic_back_white"/>
+            app:bar_icon="@drawable/ic_back"/>
 
 
     <LinearLayout
@@ -35,8 +35,8 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:maxWidth="190dp"
-                android:textColor="@color/lb_cm_white"
-                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
         />
 
     </LinearLayout>

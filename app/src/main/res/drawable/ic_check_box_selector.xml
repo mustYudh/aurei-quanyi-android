@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:width="13dp" android:height="13dp" android:state_selected="true">
+        <shape android:shape="oval"
+               android:useLevel="false">
+            <solid android:color="@color/app_main_color"/>
+            <stroke
+                    android:width="0.5dp"
+                    android:color="#B6BCBF"/>
+        </shape>
+    </item>
+
+    <item android:width="13dp" android:height="13dp" tools:ignore="StateListReachable">
+        <shape android:shape="oval"
+               android:useLevel="false">
+            <solid android:color="@color/white"/>
+            <stroke
+                    android:width="0.5dp"
+                    android:color="#B6BCBF"/>
+        </shape>
+    </item>
+</selector>
