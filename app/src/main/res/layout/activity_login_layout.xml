@@ -150,6 +150,7 @@
             </LinearLayout>
 
             <FrameLayout
+                    android:visibility="gone"
                     android:paddingBottom="20dp"
                     android:clipChildren="false"
                     android:layout_width="match_parent"

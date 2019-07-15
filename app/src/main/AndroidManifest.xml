@@ -17,14 +17,15 @@
     <application
             android:name=".APP"
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_launcher"
             android:label="${APP_NAME}"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@drawable/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/AppStyle"
             tools:replace="android:theme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".module.splash.SplashActivity"
+                  android:theme="@style/SplashThem"
                   android:screenOrientation="portrait">
             <intent-filter>
             <action android:name="android.intent.action.MAIN"/>

@@ -32,5 +32,5 @@ fun EditText.getEditText(): String {
 }
 
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://129.28.196.121:8080/#/index?access_token=${UserProfile.token}"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/index?access_token=${UserProfile.token}&isFromApp=1"))
 }

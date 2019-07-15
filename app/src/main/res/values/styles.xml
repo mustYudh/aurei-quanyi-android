@@ -4,4 +4,8 @@
         <item name="android:windowBackground">@color/activity_bg</item>
     </style>
 
+    <style name="SplashThem" parent="@style/BaseTheme">
+        <item name="android:windowBackground">@drawable/ic_splash</item>
+    </style>
+
 </resources>
