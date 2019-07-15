@@ -4,11 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
-import android.view.KeyEvent
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
-import com.aurei.quanyi.utils.PressHandle
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -26,27 +25,36 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
     @JavascriptInterface
     fun logout() {
         UserProfile.clean()
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
+//            finish()
+        })
     }
 
     @JavascriptInterface
     fun login() {
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
-            webView.loadUrl("${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&isFromApp=1")
+            Log.e("======>from","${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&fromApp=1")
+            runOnUiThread(Runnable {
+                webView.loadUrl("${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&fromApp=1")
+            })
+
         })
     }
 
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
     @JavascriptInterface
     fun goBack(delta: Int) {
-        if (webView.canGoBackOrForward(delta)) {
-            webView.goBackOrForward(delta)
-        }
-        if (!webView.canGoBack()) {
-            val pressHandle = PressHandle(activity)
-            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
-                activity?.finish()
-            }
-        }
+//        Log.e("=====>",delta.toString())
+//        if (webView.canGoBackOrForward(delta)) {
+//            webView.goBackOrForward(delta)
+//        } else if (!webView.canGoBack()) {
+//            val pressHandle = PressHandle(activity)
+//            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
+//                activity?.finish()
+//            }
+//        } else {
+            activity?.finish()
+//        }
     }
 
     //拍照

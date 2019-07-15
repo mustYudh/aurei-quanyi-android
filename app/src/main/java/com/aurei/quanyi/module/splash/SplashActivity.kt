@@ -34,10 +34,17 @@ class SplashActivity : BaseActivity() {
         )
         if (Build.VERSION.SDK_INT >= 23) {
             val rxPermissions = RxPermissions(this)
-            rxPermissions.request(*permiss).subscribe { granted -> }
+            rxPermissions.request(*permiss).subscribe { granted ->
+                next()
+            }
         } else {
-
+            next()
         }
+
+
+    }
+
+    private fun next() {
         RxCountDown.countdown(1)
             .subscribe(object : Observer<Int> {
                 override fun onNext(t: Int) {
@@ -49,23 +56,17 @@ class SplashActivity : BaseActivity() {
                 }
 
                 override fun onError(e: Throwable) {
-                    goHome()
+                    goHome(activity)
+                    finish()
+
                 }
 
                 override fun onComplete() {
-                    goHome()
+                    goHome(activity)
+                    finish()
+
                 }
             })
-
-    }
-
-    private fun goHome() {
-//        if (UserProfile.isLogin) {
-            goHome(activity)
-//        } else {
-//            launchHelper.startActivity(LoginActivity::class.java)
-//        }
-        finish()
     }
 
 }

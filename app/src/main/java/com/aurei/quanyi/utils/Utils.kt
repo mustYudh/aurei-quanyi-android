@@ -31,15 +31,17 @@ fun EditText.getEditText(): String {
     return text.toString().trim()
 }
 
+//val url = "http://m.aurei.cc:81/#"
+val url = "http://172.90.14.232:8080/#"
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/index?access_token=${UserProfile.token}&isFromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/index?access_token=${UserProfile.token}&fromApp=1"))
 }
 
 
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/findPwd?isFromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/#/findPwd?fromApp=1"))
 }
 
 fun registerUrl(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/registerPhone?isFromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/registerPhone?fromApp=1"))
 }

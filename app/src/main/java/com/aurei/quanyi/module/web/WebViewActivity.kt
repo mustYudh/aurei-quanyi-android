@@ -3,9 +3,13 @@ package com.aurei.quanyi.module.web
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
 import android.webkit.WebView
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
@@ -17,6 +21,7 @@ import com.aurei.quanyi.utils.showToast
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
+import com.xuexiang.xhttp2.XHttp
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.web.ProgressWebChromeClient
@@ -76,10 +81,28 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     override fun loadData() {
         val url = intent.getStringExtra(WEB_URL)
+        synCookie(url)
         webView!!.loadUrl(url)
 
     }
 
+    private fun synCookie(url: String) {
+        Log.e("======>",url)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.createInstance(this)
+        } else {
+            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
+        }
+        CookieManager.getInstance().setAcceptCookie(true)
+        val cookieManager = CookieManager.getInstance()
+        for (cookie in XHttp.getCookieJar().cookieStore.cookies) {
+            Log.e(url, cookie.toString())
+            cookieManager.setCookie(XHttp.getBaseUrl(), cookie.toString())
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                cookieManager.flush()
+            }
+        }
+    }
 
     override fun onDestroy() {
         if (webJs != null) {

@@ -7,6 +7,7 @@ import com.qianchang.optimizetax.http.interceptor.CustomDynamicInterceptor
 import com.qianchang.optimizetax.http.interceptor.CustomLoggingInterceptor
 import com.xuexiang.xhttp2.XHttp
 import com.xuexiang.xhttp2.XHttpSDK
+import com.xuexiang.xhttp2.cookie.CookieManager
 import com.xuexiang.xhttp2.model.HttpHeaders
 import com.yu.common.base.BaseApp
 
@@ -53,6 +54,7 @@ class APP : BaseApp() {
         XHttp.getInstance().setRetryCount(3)
         //添加全局公共请求参数
         XHttp.getInstance().addCommonHeaders(getHttpHeaders())
+        XHttp.getInstance().setCookieStore(CookieManager.getInstance(this))
     }
 
 
