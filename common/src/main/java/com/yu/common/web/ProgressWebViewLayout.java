@@ -50,6 +50,10 @@ public class ProgressWebViewLayout extends LinearLayout {
     return webView;
   }
 
+  public LinearLayout emptyView() {
+    return  findViewById(R.id.web_empty_view);
+  }
+
   /**
    * 通用设置
    */

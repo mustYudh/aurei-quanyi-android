@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.yu.common.mvp.PresenterLifeCycle
+import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import java.io.File
@@ -50,6 +51,10 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
             }
         }
         initJs()
+        val params = webViewLayout.emptyView().layoutParams
+        params.height = StatusBarUtils.getStatusBarHeight(activity)
+        webViewLayout.emptyView().layoutParams = params
+
     }
 
     @SuppressLint("JavascriptInterface", "AddJavascriptInterface")

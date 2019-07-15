@@ -6,10 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
-import com.aurei.quanyi.module.login.LoginActivity
 import com.aurei.quanyi.utils.RxCountDown
 import com.aurei.quanyi.utils.goHome
-import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -62,11 +60,11 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun goHome() {
-        if (UserProfile.isLogin) {
+//        if (UserProfile.isLogin) {
             goHome(activity)
-        } else {
-            launchHelper.startActivity(LoginActivity::class.java)
-        }
+//        } else {
+//            launchHelper.startActivity(LoginActivity::class.java)
+//        }
         finish()
     }
 

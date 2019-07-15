@@ -10,8 +10,9 @@ import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.login.presenter.LoginPresenter
 import com.aurei.quanyi.module.login.presenter.LoginViewer
-import com.aurei.quanyi.module.web.WebViewActivity
 import com.aurei.quanyi.utils.getEditText
+import com.aurei.quanyi.utils.getPassword
+import com.aurei.quanyi.utils.registerUrl
 import com.qianli.housekeeper.data.PublicProfile
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarFontColorUtil
@@ -32,8 +33,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
 
     companion object {
         private var loginCallBack: (() -> Unit)? = null
-        fun getIntent(context: Context,call: () -> Unit) {
+        fun getIntent(context: Context,call: () -> Unit): Intent {
             this.loginCallBack  = call
+            return Intent(context,LoginActivity::class.java)
         }
     }
 
@@ -56,10 +58,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
                 mPresenter.login(user_account.getEditText(), password.getEditText(),loginCallBack)
             }
             R.id.register -> {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https://www.baidu.com"))
+                registerUrl(activity)
             }
             R.id.forget_password -> {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https://www.baidu.com"))
+                getPassword(activity)
             }
             R.id.sim_login -> {
                 launchHelper.startActivityForResult(AutoLoginActivity::class.java,OPEN_AUTO_LOGIN_REQUEST_CODE)

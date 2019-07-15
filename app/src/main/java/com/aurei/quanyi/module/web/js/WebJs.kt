@@ -26,8 +26,13 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
     @JavascriptInterface
     fun logout() {
         UserProfile.clean()
-        LauncherHelper.from(activity).startActivity(LoginActivity::class.java)
-        activity?.finish()
+    }
+
+    @JavascriptInterface
+    fun login() {
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
+            webView.loadUrl("${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&isFromApp=1")
+        })
     }
 
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
@@ -102,5 +107,7 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
             result(true)
         }
     }
+
+
 
 }

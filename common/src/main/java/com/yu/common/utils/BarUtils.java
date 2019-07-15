@@ -28,8 +28,7 @@ public class BarUtils {
   public static void setStatusBarTopPadding(View actionBar) {
     if (actionBar != null && actionBar.getContext() != null) {
       int height =
-          Build.VERSION.SDK_INT >= 19 ? StatusBarUtils.getStatusBarHeight(actionBar.getContext())
-              : 0;
+          Build.VERSION.SDK_INT >= 19 ? StatusBarUtils.getStatusBarHeight(actionBar.getContext()) : 0;
       actionBar.setPadding(0, height, 0, 0);
     }
   }

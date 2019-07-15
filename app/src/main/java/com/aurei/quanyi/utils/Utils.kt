@@ -34,3 +34,12 @@ fun EditText.getEditText(): String {
 fun goHome(context: Context) {
     LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/index?access_token=${UserProfile.token}&isFromApp=1"))
 }
+
+
+fun getPassword(context: Context) {
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/findPwd?isFromApp=1"))
+}
+
+fun registerUrl(context: Context) {
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"http://m.aurei.cc:81/#/registerPhone?isFromApp=1"))
+}
