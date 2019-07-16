@@ -2,12 +2,11 @@ package com.aurei.quanyi.module.web.js
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Build
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
+import com.aurei.quanyi.module.web.WebViewActivity
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -19,23 +18,24 @@ import com.yu.common.launche.LauncherHelper
  * @author chenwei
  * @date 2017/8/30
  */
-class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView) {
+class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, webView) {
 
     //退出登录
     @JavascriptInterface
     fun logout() {
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
-//            finish()
+            runOnUiThread(Runnable {
+                webView.reload()
+            })
         })
     }
 
     @JavascriptInterface
     fun login() {
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
-            Log.e("======>from","${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&fromApp=1")
             runOnUiThread(Runnable {
-                webView.loadUrl("${webView.url}${if(webView.url.contains("?")) "&" else "?"}access_token=${UserProfile.token}&fromApp=1")
+                webView.reload()
             })
 
         })
@@ -53,7 +53,7 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
 //                activity?.finish()
 //            }
 //        } else {
-            activity?.finish()
+        activity?.finish()
 //        }
     }
 
@@ -116,6 +116,25 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
         }
     }
 
+    @JavascriptInterface
+    fun fixStatusBarHeight(show: Boolean, callBack: String) {
+        runOnUiThread(Runnable {
+            if (fixStatusBarListener != null) {
+                fixStatusBarListener?.fix(show)
+            }
+        })
+    }
 
+
+    private var fixStatusBarListener: FixStatusBarListener? = null
+
+    public interface FixStatusBarListener {
+        fun fix(need: Boolean)
+    }
+
+
+    fun setOnFixStatusBarListener(listener: FixStatusBarListener) {
+        this.fixStatusBarListener = listener
+    }
 
 }

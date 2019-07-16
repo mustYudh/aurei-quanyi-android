@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.EditText
 import com.aurei.quanyi.APP
 import com.aurei.quanyi.module.web.WebViewActivity
-import com.qianchang.optimizetax.data.UserProfile
 import com.yu.common.launche.LauncherHelper
 import com.yu.common.toast.ToastUtils
 
@@ -31,17 +30,17 @@ fun EditText.getEditText(): String {
     return text.toString().trim()
 }
 
+
 //val url = "http://m.aurei.cc:81/#"
 val url = "http://172.90.14.232:8080/#"
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/index?access_token=${UserProfile.token}&fromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/index"))
 }
 
-
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/#/findPwd?fromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/#/findPwd"))
 }
 
 fun registerUrl(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/registerPhone?fromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"$url/registerPhone"))
 }

@@ -53,6 +53,8 @@ object UserProfile : Serializable {
 
 
     fun clean() {
+        token = ""
+        account = ""
         spHelper?.clear()
     }
 

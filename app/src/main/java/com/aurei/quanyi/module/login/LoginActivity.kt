@@ -12,6 +12,7 @@ import com.aurei.quanyi.module.login.presenter.LoginPresenter
 import com.aurei.quanyi.module.login.presenter.LoginViewer
 import com.aurei.quanyi.utils.getEditText
 import com.aurei.quanyi.utils.getPassword
+import com.aurei.quanyi.utils.goHome
 import com.aurei.quanyi.utils.registerUrl
 import com.qianli.housekeeper.data.PublicProfile
 import com.yu.common.mvp.PresenterLifeCycle
@@ -67,7 +68,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
                 launchHelper.startActivityForResult(AutoLoginActivity::class.java,OPEN_AUTO_LOGIN_REQUEST_CODE)
             }
             R.id.back -> {
-                finish()
+                if(loginCallBack == null) {
+                    finish()
+                } else {
+                    goHome(activity)
+                }
+
             }
         }
     }

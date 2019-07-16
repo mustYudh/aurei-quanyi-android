@@ -39,7 +39,7 @@ class LoginPresenter(viewer: LoginViewer) : BaseViewPresenter<LoginViewer>(viewe
                     Log.e("=====>token", t?.token)
                     UserProfile.login(t)
                     if (call != null) {
-
+                        call()
                     } else {
                         goHome(activity)
                     }
