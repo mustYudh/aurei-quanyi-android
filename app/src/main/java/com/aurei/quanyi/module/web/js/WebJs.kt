@@ -31,12 +31,16 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
             Log.e("======>退出登录后登陆","返回")
+                webView.clearCache(true)
                 webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
+//            webView.reload()
         },{
 //            Log.e("======>","返回")
-//            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
-            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!,"",false))
-            finish()
+            webView.clearCache(true)
+            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
+//            webView.reload()
+//            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!,"",false))
+//            finish()
         }))
     }
 
@@ -45,11 +49,16 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
 
     @JavascriptInterface
     fun login(url: String) {
+        Log.e("======>bridge-login","触发")
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
+            webView.clearCache(true)
             webView.loadUrl(filtrationUrl("${getBaseUrl()}$url",activity!!))
+//            webView.reload()
             Log.e("=======>重载的URL",filtrationUrl("${getBaseUrl()}$url",activity!!))
         },{
+            webView.clearCache(true)
             webView.loadUrl("${getBaseUrl()}$url")
+//            webView.reload()
         }))
     }
 
