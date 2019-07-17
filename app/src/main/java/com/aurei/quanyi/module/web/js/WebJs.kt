@@ -30,10 +30,13 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
         Log.e("======>bridge-logout","触发")
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
+            Log.e("======>退出登录后登陆","返回")
                 webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
         },{
-            Log.e("======>","返回")
-            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
+//            Log.e("======>","返回")
+//            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
+            LauncherHelper.from(activity).startActivity(WebViewActivity::class.java)
+            finish()
         }))
     }
 

@@ -35,7 +35,7 @@ open class AppBaseWebViewClient : WebViewClient() {
   }
 
 
-  private fun synCookie(webView: WebView, url: String) {
+  public fun synCookie(webView: WebView, url: String) {
     if (Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       CookieSyncManager.createInstance(webView.context)
     } else {

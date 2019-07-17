@@ -28,11 +28,11 @@
                 android:theme="@style/SplashThem"
                 android:name=".module.splash.SplashActivity"
                   android:screenOrientation="portrait">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-            <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".module.login.LoginActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -44,8 +44,15 @@
                 <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".module.web.WebViewActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+                android:theme="@style/SplashThem"
+                android:name=".module.web.WebViewActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity android:name=".module.login.AutoLoginActivity"
                   android:screenOrientation="portrait"/>
