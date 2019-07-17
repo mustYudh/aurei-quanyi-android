@@ -12,7 +12,6 @@ import com.aurei.quanyi.module.login.presenter.LoginPresenter
 import com.aurei.quanyi.module.login.presenter.LoginViewer
 import com.aurei.quanyi.utils.getEditText
 import com.aurei.quanyi.utils.getPassword
-import com.aurei.quanyi.utils.goHome
 import com.aurei.quanyi.utils.registerUrl
 import com.qianli.housekeeper.data.PublicProfile
 import com.yu.common.mvp.PresenterLifeCycle
@@ -34,9 +33,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
 
     companion object {
         private var loginCallBack: (() -> Unit)? = null
-        fun getIntent(context: Context,call: () -> Unit): Intent {
-            this.loginCallBack  = call
-            return Intent(context,LoginActivity::class.java)
+        private var backCallBack: (() -> Unit)? = null
+        fun getIntent(context: Context, call: () -> Unit, back: (() -> Unit)?): Intent {
+            this.loginCallBack = call
+            this.backCallBack = back
+            return Intent(context, LoginActivity::class.java)
         }
     }
 
@@ -56,7 +57,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.login -> {
-                mPresenter.login(user_account.getEditText(), password.getEditText(),loginCallBack)
+                mPresenter.login(user_account.getEditText(), password.getEditText(), loginCallBack)
             }
             R.id.register -> {
                 registerUrl(activity)
@@ -65,20 +66,28 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
                 getPassword(activity)
             }
             R.id.sim_login -> {
-                launchHelper.startActivityForResult(AutoLoginActivity::class.java,OPEN_AUTO_LOGIN_REQUEST_CODE)
+                launchHelper.startActivityForResult(AutoLoginActivity::class.java, OPEN_AUTO_LOGIN_REQUEST_CODE)
             }
             R.id.back -> {
-                if(loginCallBack == null) {
-                    finish()
+                if (backCallBack != null) {
+                    backCallBack?.let {
+                        it()
+                        finish()
+                    }
                 } else {
-                    goHome(activity)
+                    finish()
                 }
+
 
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == OPEN_AUTO_LOGIN_REQUEST_CODE) {
             finish()

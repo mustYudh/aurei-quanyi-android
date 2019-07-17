@@ -26,7 +26,7 @@ public class PressHandle {
     if (keyCode == KeyEvent.KEYCODE_BACK && activity.get() != null) {
       if (!isPress) {
         isPress = true;
-        ToastUtils.show("再按一次退出");
+        ToastUtils.show(activity.get(),"再按一次退出");
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
           @Override public void run() {
             isPress = false;

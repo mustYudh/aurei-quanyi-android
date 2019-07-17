@@ -3,6 +3,7 @@ package com.aurei.quanyi.module.web.js
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
@@ -13,6 +14,7 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yu.common.launche.LauncherHelper
+import com.yu.common.navigation.StatusBarUtils
 
 /**
  * @author chenwei
@@ -24,21 +26,25 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     @JavascriptInterface
     fun logout() {
         UserProfile.clean()
-        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
             runOnUiThread(Runnable {
-                webView.reload()
+                webView.loadUrl("http://172.90.14.232:8080/#/person?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
             })
-        })
+        },{
+            webView.loadUrl("http://172.90.14.232:8080/#/index?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
+        }))
     }
+
+
+
 
     @JavascriptInterface
     fun login() {
-        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!) {
-            runOnUiThread(Runnable {
-                webView.reload()
-            })
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
 
-        })
+        },{
+
+        }))
     }
 
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
@@ -117,7 +123,8 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     }
 
     @JavascriptInterface
-    fun fixStatusBarHeight(show: Boolean, callBack: String) {
+    fun fixStatusBarHeight(show: Boolean) {
+        Log.e("======>show",show.toString())
         runOnUiThread(Runnable {
             if (fixStatusBarListener != null) {
                 fixStatusBarListener?.fix(show)

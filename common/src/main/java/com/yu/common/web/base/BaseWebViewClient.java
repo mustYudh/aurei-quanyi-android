@@ -3,6 +3,7 @@ package com.yu.common.web.base;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.yu.common.launche.LauncherHelper;
@@ -14,6 +15,7 @@ import com.yu.common.launche.LauncherHelper;
 public class BaseWebViewClient extends WebViewClient {
 
   @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    Log.e("======>记载的url",url);
     if (TextUtils.isEmpty(url)) {
       return true;
     }

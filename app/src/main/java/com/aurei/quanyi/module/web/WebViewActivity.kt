@@ -3,7 +3,6 @@ package com.aurei.quanyi.module.web
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,20 +12,18 @@ import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
+import com.aurei.quanyi.utils.PressHandle
 import com.aurei.quanyi.utils.showToast
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
-import com.qianchang.optimizetax.data.UserProfile
 import com.xuexiang.xhttp2.XHttp
-import com.yu.common.launche.LauncherHelper
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.web.ProgressWebChromeClient
@@ -75,31 +72,36 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
 
     fun fixStatusBar(fix: Boolean) {
-        webViewLayout.emptyView().visibility = if (fix) View.GONE else View.VISIBLE
+        webViewLayout.emptyView().visibility = if (fix) View.VISIBLE else View.GONE
     }
 
     @SuppressLint("JavascriptInterface", "AddJavascriptInterface")
     private fun initJs() {
         webJs = WebJs(this, webView!!)
         webView!!.addJavascriptInterface(webJs, "android")
-        webView!!.webViewClient =  object :WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (TextUtils.isEmpty(url)) {
-                    return true
-                }
-                if (url.startsWith("http://") || url.startsWith("https://")) {
-                    //?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(context)}
-                    var params = ""
-                    if (!url.contains("?")) { params = "?"}
-                    view.loadUrl(url + params + "access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
-                    Log.e("====>url",webView?.url)
-                    return false
-                } else {
-                    LauncherHelper.from(view.context).startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                    return true
-                }
-            }
-        }
+//        webView!!.webViewClient =  object :WebViewClient() {
+//            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//                if (TextUtils.isEmpty(url)) {
+//                    return true
+//                }
+//                if (url.startsWith("http://") || url.startsWith("https://")) {
+//                    //?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(context)}
+//                    var params = ""
+//                    if (!url.contains("?")) { params = "?"}
+//                    view.loadUrl(url + params + "access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
+//                    Log.e("====>url",webView?.url)
+//                    return false
+//                } else {
+//                    LauncherHelper.from(view.context).startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+//                    return true
+//                }
+//            }
+//        }
+    }
+
+
+    fun getData() {
+
     }
 
 
@@ -121,7 +123,6 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     }
 
     private fun synCookie(url: String) {
-        Log.e("======>", url)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.createInstance(this)
         } else {
@@ -180,6 +181,19 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     override fun uploadImageSuccess(url: UploadInfo?) {
         showToast("上传成功")
         webView?.loadUrl("javascript:getPhotoSuccess(${Gson().toJson(url)})")
+    }
+    private val pressHandle = PressHandle(this)
+
+
+    override fun onBackPressed() {
+        if(webView!!.canGoBack()) {
+            super.onBackPressed()
+        } else {
+            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
+                super.onBackPressed()
+            }
+        }
+
     }
 
 }

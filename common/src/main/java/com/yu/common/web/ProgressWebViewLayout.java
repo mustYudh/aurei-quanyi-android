@@ -7,7 +7,6 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import com.yu.common.R;
-import com.yu.common.web.base.BaseWebViewClient;
 //import ren.yale.android.cachewebviewlib.CacheWebView;
 
 /**
@@ -59,7 +58,7 @@ public class ProgressWebViewLayout extends LinearLayout {
    */
   private void doCommonSetting() {
     WebSettingUtils.setWebSetting(getContext(), webView);
-    webView.setWebViewClient(new BaseWebViewClient());
+//    webView.setWebViewClient(new BaseWebViewClient());
   }
 
   private void addProgressChromeClient() {
