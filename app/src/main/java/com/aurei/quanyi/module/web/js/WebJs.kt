@@ -27,38 +27,41 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     //退出登录
     @JavascriptInterface
     fun logout() {
-        Log.e("======>bridge-logout","触发")
+        Log.e("======>bridge-logout", "触发")
         UserProfile.clean()
-        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
-            Log.e("======>退出登录后登陆","返回")
-                webView.clearCache(true)
-                webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
+            Log.e("======>退出登录后登陆", "返回")
+            webView.clearCache(true)
+            webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
 //            webView.reload()
-        },{
-//            Log.e("======>","返回")
+        }, {
+            //            Log.e("======>","返回${getBaseUrl()}/index?${getParams(activity!!)}")
             webView.clearCache(true)
             webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
 //            webView.reload()
-//            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!,"",false))
+//            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!, "", false))
 //            finish()
         }))
     }
 
 
-
-
     @JavascriptInterface
-    fun login(url: String) {
-        Log.e("======>bridge-login","触发")
-        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
+    fun login(url: String, isCenter: Boolean) {
+        Log.e("======>bridge-login", "触发$url" + isCenter.toString())
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
             webView.clearCache(true)
-            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url",activity!!))
+            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
 //            webView.reload()
-            Log.e("=======>重载的URL",filtrationUrl("${getBaseUrl()}$url",activity!!))
-        },{
+            Log.e("=======>重载的URL", filtrationUrl("${getBaseUrl()}$url", activity!!))
+        }, {
             webView.clearCache(true)
-            webView.loadUrl("${getBaseUrl()}$url")
-//            webView.reload()
+            if (isCenter) {
+                webView.loadUrl("${getBaseUrl()}/index")
+//                webView.reload()
+            } else {
+                webView.loadUrl("${getBaseUrl()}$url")
+            }
+
         }))
     }
 
@@ -139,7 +142,7 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
 
     @JavascriptInterface
     fun fixStatusBarHeight(show: Boolean) {
-        Log.e("======>show",show.toString())
+        Log.e("======>show", show.toString())
         runOnUiThread(Runnable {
             if (fixStatusBarListener != null) {
                 fixStatusBarListener?.fix(show)
