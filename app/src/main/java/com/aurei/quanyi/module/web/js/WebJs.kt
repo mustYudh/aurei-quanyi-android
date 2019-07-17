@@ -46,11 +46,9 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     @JavascriptInterface
     fun login(url: String) {
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
-            webView.goBack()
             webView.loadUrl(filtrationUrl("${getBaseUrl()}$url",activity!!))
             Log.e("=======>重载的URL",filtrationUrl("${getBaseUrl()}$url",activity!!))
         },{
-            webView.goBack()
             webView.loadUrl("${getBaseUrl()}$url")
         }))
     }

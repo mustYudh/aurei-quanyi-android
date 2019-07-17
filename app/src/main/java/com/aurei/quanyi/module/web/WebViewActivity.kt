@@ -9,17 +9,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.WebView
+import android.webkit.*
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
-import com.aurei.quanyi.utils.PressHandle
-import com.aurei.quanyi.utils.showToast
+import com.aurei.quanyi.utils.*
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -30,6 +27,7 @@ import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import kotlinx.android.synthetic.main.activity_common_webview.*
 import java.io.File
+
 
 /**
  * @author yudneghao
@@ -53,9 +51,10 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
                 super.onReceivedTitle(view, title)
             }
         }
-        webView!!.webViewClient = object : AppBaseWebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished(view, url)
+        webView!!.webViewClient = object : WebViewClient() {
+
+            override fun onLoadResource(view: WebView, url: String) {
+                super.onLoadResource(view, filtrationUrl(url,activity!!))
             }
         }
         initJs()
@@ -79,24 +78,23 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     private fun initJs() {
         webJs = WebJs(this, webView!!)
         webView!!.addJavascriptInterface(webJs, "android")
-//        webView!!.webViewClient =  object :WebViewClient() {
-//            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-//                if (TextUtils.isEmpty(url)) {
-//                    return true
-//                }
-//                if (url.startsWith("http://") || url.startsWith("https://")) {
-//                    //?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(context)}
-//                    var params = ""
-//                    if (!url.contains("?")) { params = "?"}
-//                    view.loadUrl(url + params + "access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
-//                    Log.e("====>url",webView?.url)
-//                    return false
-//                } else {
-//                    LauncherHelper.from(view.context).startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-//                    return true
-//                }
-//            }
-//        }
+        webView!!.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                if (newProgress >= 100) {
+                    splash_bg.visibility = View.GONE
+                    val res = resources
+                    val drawable = res.getDrawable(R.drawable.bkcolor)
+                    window.setBackgroundDrawable(drawable)
+                }
+                super.onProgressChanged(view, newProgress)
+            }
+        }
+
+        webView!!.setWebViewClient(object : WebViewClient() {
+            override fun onLoadResource(view: WebView?, url: String?) {
+                super.onLoadResource(view, url)
+            }
+        })
     }
 
 
@@ -106,17 +104,19 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView != null && webView!!.canGoBack()) {
-                webView!!.goBack()
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null && webView!!.canGoBack()) {
+//                webView!!.goBack()
                 return true
-            }
+        }  else {
+            return super.onKeyDown(keyCode, event)
         }
-        return super.onKeyDown(keyCode, event)
+
+
     }
 
     override fun loadData() {
-        val url = intent.getStringExtra(WEB_URL)
+//        val url = intent.getStringExtra(WEB_URL)
+        val url = "${getBaseUrl()}/index?${getParams(activity)}"
         synCookie(url)
         webView!!.loadUrl(url)
     }
@@ -184,9 +184,10 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     private val pressHandle = PressHandle(this)
 
 
+
     override fun onBackPressed() {
         if(webView!!.canGoBack()) {
-//            super.onBackPressed()
+            super.onBackPressed()
         } else {
             if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
                 super.onBackPressed()
@@ -194,5 +195,7 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         }
 
     }
+
+
 
 }

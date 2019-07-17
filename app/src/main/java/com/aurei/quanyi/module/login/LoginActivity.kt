@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.View
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
@@ -70,10 +71,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
             }
             R.id.back -> {
                 if (backCallBack != null) {
-                    backCallBack?.let {
-                        it()
-                        finish()
-                    }
+                    backCallBack?.invoke()
+                    finish()
                 } else {
                     finish()
                 }
@@ -83,17 +82,22 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
         }
     }
 
-    override fun onBackPressed() {
-        if (backCallBack != null) {
-            backCallBack?.let {
-                it()
-                super.onBackPressed()
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (backCallBack != null) {
+                backCallBack?.invoke()
+                finish()
             }
-        } else {
-            super.onBackPressed()
+            return true
+        }  else {
+            return super.onKeyDown(keyCode, event)
         }
 
+
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -44,8 +44,9 @@
                 <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
+        <!--android:theme="@style/SplashThem"-->
         <activity
-                android:theme="@style/SplashThem"
+
                 android:name=".module.web.WebViewActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
