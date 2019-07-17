@@ -8,13 +8,15 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
 import com.aurei.quanyi.module.web.WebViewActivity
+import com.aurei.quanyi.utils.filtrationUrl
+import com.aurei.quanyi.utils.getBaseUrl
+import com.aurei.quanyi.utils.getParams
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yu.common.launche.LauncherHelper
-import com.yu.common.navigation.StatusBarUtils
 
 /**
  * @author chenwei
@@ -25,13 +27,13 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     //退出登录
     @JavascriptInterface
     fun logout() {
+        Log.e("======>bridge-logout","触发")
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
-            runOnUiThread(Runnable {
-                webView.loadUrl("http://172.90.14.232:8080/#/person?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
-            })
+                webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
         },{
-            webView.loadUrl("http://172.90.14.232:8080/#/index?access_token=${UserProfile.token}&fromApp=1&statusBarHeight=${StatusBarUtils.getStatusBarHeight(activity)}")
+            Log.e("======>","返回")
+            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
         }))
     }
 
@@ -39,11 +41,14 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
 
 
     @JavascriptInterface
-    fun login() {
+    fun login(url: String) {
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!,{
-
+            webView.goBack()
+            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url",activity!!))
+            Log.e("=======>重载的URL",filtrationUrl("${getBaseUrl()}$url",activity!!))
         },{
-
+            webView.goBack()
+            webView.loadUrl("${getBaseUrl()}$url")
         }))
     }
 

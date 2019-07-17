@@ -84,10 +84,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (backCallBack != null) {
+            backCallBack?.let {
+                it()
+                super.onBackPressed()
+            }
+        } else {
+            super.onBackPressed()
+        }
+
     }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == OPEN_AUTO_LOGIN_REQUEST_CODE) {
             finish()

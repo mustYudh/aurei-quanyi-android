@@ -45,9 +45,6 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     override fun setView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_common_webview)
-        val params = webViewLayout.emptyView().layoutParams
-        params.height = StatusBarUtils.getStatusBarHeight(activity)
-        webViewLayout.emptyView().layoutParams = params
         val webViewLayout = bindView<ProgressWebViewLayout>(R.id.webViewLayout)
         webView = webViewLayout.webView
         webView!!.setDownloadListener(WebViewDownLoadListener(activity))
@@ -72,6 +69,9 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
 
     fun fixStatusBar(fix: Boolean) {
+        val params = webViewLayout.emptyView().layoutParams
+        params.height = StatusBarUtils.getStatusBarHeight(activity)
+        webViewLayout.emptyView().layoutParams = params
         webViewLayout.emptyView().visibility = if (fix) View.VISIBLE else View.GONE
     }
 
@@ -119,7 +119,6 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         val url = intent.getStringExtra(WEB_URL)
         synCookie(url)
         webView!!.loadUrl(url)
-
     }
 
     private fun synCookie(url: String) {
@@ -187,7 +186,7 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     override fun onBackPressed() {
         if(webView!!.canGoBack()) {
-            super.onBackPressed()
+//            super.onBackPressed()
         } else {
             if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
                 super.onBackPressed()
