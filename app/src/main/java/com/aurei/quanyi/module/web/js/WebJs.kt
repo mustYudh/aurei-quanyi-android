@@ -35,7 +35,7 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
         },{
 //            Log.e("======>","返回")
 //            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
-            LauncherHelper.from(activity).startActivity(WebViewActivity::class.java)
+            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!,"",false))
             finish()
         }))
     }

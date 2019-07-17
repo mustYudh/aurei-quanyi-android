@@ -115,6 +115,8 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     }
 
     override fun loadData() {
+        var showBg = intent.getBooleanExtra(SHOW_BG,true)
+        splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
 //        val url = intent.getStringExtra(WEB_URL)
         val url = "${getBaseUrl()}/index?${getParams(activity)}"
         synCookie(url)
@@ -154,12 +156,14 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     companion object {
         val WEB_URL = "webUrl"
+        val SHOW_BG = "show_bg"
         /**
          * @param url url
          */
-        fun callIntent(context: Context, url: String): Intent {
+        fun callIntent(context: Context, url: String,show: Boolean): Intent {
             val intent = Intent(context, WebViewActivity::class.java)
             intent.putExtra(WEB_URL, url)
+            intent.putExtra(SHOW_BG, show)
             return intent
         }
     }

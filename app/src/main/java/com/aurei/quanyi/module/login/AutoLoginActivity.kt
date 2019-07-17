@@ -13,7 +13,6 @@ import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseBarActivity
 import com.aurei.quanyi.module.login.presenter.AutoLoginPresenter
 import com.aurei.quanyi.module.login.presenter.AutoLoginViewer
-import com.aurei.quanyi.module.web.WebViewActivity
 import com.aurei.quanyi.utils.showToast
 import com.yu.common.mvp.PresenterLifeCycle
 import kotlinx.android.synthetic.main.activity_auto_login_layout.*
@@ -53,7 +52,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
         spannableBuilder.setSpan(colorSpan, 5, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         val clickableSpanOne: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -75,7 +74,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
                 isAgree = !isAgree
             }
             R.id.what_is_avoid_close_login -> {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
             R.id.login -> {
                 if (isAgree) {
@@ -85,7 +84,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
                 }
             }
             R.id.problem -> {
-                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
             R.id.normal_login -> {
                 finish()

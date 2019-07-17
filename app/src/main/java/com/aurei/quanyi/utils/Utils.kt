@@ -71,13 +71,13 @@ fun getParams(context: Context): String {
 }
 
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/index?${getParams(context)}"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/index?${getParams(context)}",true))
 }
 
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/#/findPwd?fromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/#/findPwd?fromApp=1",false))
 }
 
 fun registerUrl(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/registerPhone?fromApp=1"))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/registerPhone?fromApp=1",false))
 }
