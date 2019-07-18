@@ -50,6 +50,9 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
         Log.e("======>bridge-login", "触发$url" + isCenter.toString())
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
             webView.clearCache(true)
+            if (!isCenter) {
+                webView.goBack()
+            }
             webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
 //            webView.reload()
             Log.e("=======>重载的URL", filtrationUrl("${getBaseUrl()}$url", activity!!))

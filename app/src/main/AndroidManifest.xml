@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
+            android:usesCleartextTraffic="true"
             android:name=".APP"
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
@@ -24,6 +25,18 @@
             android:theme="@style/AppStyle"
             tools:replace="android:theme"
             tools:ignore="GoogleAppIndexingWarning">
+        <meta-data
+                android:name="android.max_aspect"
+                android:value="2.1"/>
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="${applicationId}.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/picker_file_paths"/>
+        </provider>
         <activity
                 android:theme="@style/SplashThem"
                 android:name=".module.splash.SplashActivity"

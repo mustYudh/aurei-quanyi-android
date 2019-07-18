@@ -115,10 +115,11 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     }
 
     override fun loadData() {
-        var showBg = intent.getBooleanExtra(SHOW_BG,true)
+        val showBg = intent.getBooleanExtra(SHOW_BG,true)
         splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
-//        val url = intent.getStringExtra(WEB_URL)
-        val url = "${getBaseUrl()}/index?${getParams(activity)}"
+        val intentUrl = intent.getStringExtra(WEB_URL)
+        val url = if (TextUtils.isEmpty(intentUrl))"${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
+        Log.e("======>", "H5加载的url$url")
         synCookie(url)
         webView!!.loadUrl(url)
     }

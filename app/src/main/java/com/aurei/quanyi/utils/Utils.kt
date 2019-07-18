@@ -38,6 +38,7 @@ fun getBaseUrl(): String {
     return "http://172.90.14.232:8080/#"
 }
 
+
 fun filtrationUrl(url: String, context: Context):String {
     var result: String = ""
     if (url.contains("?")) {
@@ -76,7 +77,7 @@ fun goHome(context: Context) {
 }
 
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/#/findPwd?fromApp=1",false))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/findPwd?fromApp=1",false))
 }
 
 fun registerUrl(context: Context) {
