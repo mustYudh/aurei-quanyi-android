@@ -3,6 +3,7 @@ package com.aurei.quanyi.module.web
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -27,6 +28,8 @@ import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import kotlinx.android.synthetic.main.activity_common_webview.*
 import java.io.File
+
+
 
 
 /**
@@ -83,18 +86,36 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
                 if (newProgress >= 100) {
                     splash_bg.visibility = View.GONE
                     val res = resources
-                    val drawable = res.getDrawable(R.drawable.bkcolor)
+                    val drawable = res.getDrawable(com.aurei.quanyi.R.drawable.bkcolor)
                     window.setBackgroundDrawable(drawable)
                 }
                 super.onProgressChanged(view, newProgress)
             }
         }
 
-        webView!!.setWebViewClient(object : WebViewClient() {
-            override fun onLoadResource(view: WebView?, url: String?) {
-                super.onLoadResource(view, url)
+        webView!!.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                val uri = Uri.parse(url)
+                val scheme = uri.getScheme()
+                if (TextUtils.isEmpty(scheme)) {
+                    return true
+                }
+                if (scheme == "http" || scheme == "https") {
+                    //处理http协议
+                    return super.shouldOverrideUrlLoading(view, url)
+                } else {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    try {
+                        intent.data = Uri.parse(url)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    return true
+                }
             }
-        })
+        }
     }
 
 
