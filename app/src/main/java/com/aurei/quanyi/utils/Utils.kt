@@ -77,9 +77,9 @@ fun goHome(context: Context) {
 }
 
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/findPwd?fromApp=1",false))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/findPwd?fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}",false))
 }
 
 fun registerUrl(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/registerPhone?fromApp=1",false))
+    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/registerPhone?fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}",false))
 }
