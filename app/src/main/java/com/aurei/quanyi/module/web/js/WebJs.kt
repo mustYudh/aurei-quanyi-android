@@ -47,10 +47,10 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
 
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
-        Log.e("======>bridge-login", "触发$url" + isCenter.toString())
+        Log.e("======>bridge-login", "触发$url$isCenter")
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            webView.clearCache(true)
             if (!isCenter) {
+                webView.clearCache(true)
                 webView.goBack()
             }
             webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))

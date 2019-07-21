@@ -1,6 +1,7 @@
 package com.yu.common.web;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -50,6 +51,7 @@ public class ProgressWebChromeClient extends android.webkit.WebChromeClient {
   };
 
   @Override public void onProgressChanged(WebView view, int newProgress) {
+    Log.e("======>",newProgress + "");
     if (currProgress < 0) {
       currProgress = 0;
       if (progressbar.getVisibility() == View.GONE

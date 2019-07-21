@@ -10,7 +10,10 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
@@ -28,8 +31,6 @@ import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import kotlinx.android.synthetic.main.activity_common_webview.*
 import java.io.File
-
-
 
 
 /**
@@ -52,12 +53,15 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
             override fun onReceivedTitle(view: WebView, title: String) {
                 super.onReceivedTitle(view, title)
+                if (!TextUtils.isEmpty(view.title)) {
+                    setTitle(view.title)
+                }
             }
         }
         webView!!.webViewClient = object : WebViewClient() {
 
             override fun onLoadResource(view: WebView, url: String) {
-                super.onLoadResource(view, filtrationUrl(url,activity!!))
+                super.onLoadResource(view, filtrationUrl(url, activity!!))
             }
         }
         initJs()
@@ -81,15 +85,15 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     private fun initJs() {
         webJs = WebJs(this, webView!!)
         webView!!.addJavascriptInterface(webJs, "android")
-        webView!!.webChromeClient = object : WebChromeClient() {
+        webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
                 if (newProgress >= 100) {
                     splash_bg.visibility = View.GONE
                     val res = resources
-                    val drawable = res.getDrawable(com.aurei.quanyi.R.drawable.bkcolor)
+                    val drawable = res.getDrawable(R.drawable.bkcolor)
                     window.setBackgroundDrawable(drawable)
                 }
-                super.onProgressChanged(view, newProgress)
             }
         }
 
@@ -126,9 +130,9 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK && webView != null && webView!!.canGoBack()) {
-//                webView!!.goBack()
-                return true
-        }  else {
+            webView!!.goBack()
+            return true
+        } else {
             return super.onKeyDown(keyCode, event)
         }
 
@@ -136,10 +140,10 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
     }
 
     override fun loadData() {
-        val showBg = intent.getBooleanExtra(SHOW_BG,true)
+        val showBg = intent.getBooleanExtra(SHOW_BG, true)
         splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
         val intentUrl = intent.getStringExtra(WEB_URL)
-        val url = if (TextUtils.isEmpty(intentUrl))"${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
+        val url = if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
         Log.e("======>", "H5加载的url$url")
         synCookie(url)
         webView!!.loadUrl(url)
@@ -182,7 +186,7 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         /**
          * @param url url
          */
-        fun callIntent(context: Context, url: String,show: Boolean): Intent {
+        fun callIntent(context: Context, url: String, show: Boolean): Intent {
             val intent = Intent(context, WebViewActivity::class.java)
             intent.putExtra(WEB_URL, url)
             intent.putExtra(SHOW_BG, show)
@@ -207,12 +211,12 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         showToast("上传成功")
         webView?.loadUrl("javascript:getPhotoSuccess(${Gson().toJson(url)})")
     }
+
     private val pressHandle = PressHandle(this)
 
 
-
     override fun onBackPressed() {
-        if(webView!!.canGoBack()) {
+        if (webView!!.canGoBack()) {
             super.onBackPressed()
         } else {
             if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
@@ -221,7 +225,6 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         }
 
     }
-
 
 
 }
