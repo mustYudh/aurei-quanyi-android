@@ -46,12 +46,12 @@ fun filtrationUrl(url: String, context: Context):String {
         if (params != null && params.size > 0) {
             params["fromApp"] = "1"
             params["statusBarHeight"] = DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
-            params["access_token"] = UserProfile.token.toString()
+            params["access_token"] = UserProfile.getToken()
         } else {
             params = HashMap<String,String>()
             params["fromApp"] = "1"
             params["statusBarHeight"] = DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
-            params["access_token"] = UserProfile.token.toString()
+            params["access_token"] = UserProfile.getToken()
         }
         var filtrationUrl = ActionParams.parse(url).action  + "?"
         var position = 0
@@ -69,7 +69,7 @@ fun filtrationUrl(url: String, context: Context):String {
 }
 
 fun getParams(context: Context): String {
-    return "fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}&access_token=${UserProfile.token}"
+    return "fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}&access_token=${UserProfile.getToken()}"
 }
 
 fun goHome(context: Context) {

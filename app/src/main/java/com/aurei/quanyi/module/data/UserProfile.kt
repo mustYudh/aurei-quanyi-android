@@ -24,19 +24,20 @@ object UserProfile : Serializable {
 
 
     fun login(userInfo: UserInfo?) {
-        token = userInfo?.token
+        setToken(userInfo?.token!!)
         account = userInfo?.account
     }
 
 
-    var token: String? = null
-        get() {
-            field = spHelper?.getString(TOKEN, "")!!
-            return field
-        }
-        set(value) {
-            spHelper?.putString(TOKEN, value).toString()
-        }
+    fun setToken(value: String) {
+        spHelper?.putString(TOKEN, value).toString()
+    }
+
+    fun getToken():String {
+        return spHelper?.getString(TOKEN, "")!!
+    }
+
+
 
 
     var account: String? = null
@@ -49,11 +50,11 @@ object UserProfile : Serializable {
         }
 
 
-    var isLogin: Boolean = !TextUtils.isEmpty(token)
+    var isLogin: Boolean = !TextUtils.isEmpty(getToken())
 
 
     fun clean() {
-        token = ""
+        setToken("")
         account = ""
         spHelper?.clear()
     }

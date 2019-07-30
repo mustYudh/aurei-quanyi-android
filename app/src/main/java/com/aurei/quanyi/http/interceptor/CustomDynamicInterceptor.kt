@@ -25,7 +25,7 @@ class CustomDynamicInterceptor : BaseDynamicInterceptor<CustomDynamicInterceptor
       chain.proceed(request
         .newBuilder()
         .post(request.body())
-        .addHeader("X-Access-Token",UserProfile.token).build())
+        .addHeader("X-Access-Token",UserProfile.getToken()).build())
     } else{
       super.intercept(chain)
     }
