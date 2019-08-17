@@ -56,11 +56,13 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         webView = webViewLayout.webView
         webView!!.setDownloadListener(WebViewDownLoadListener(activity))
         webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
-            override fun onReceivedTitle(view: WebView, title: String) {
-                super.onReceivedTitle(view, title)
-                if (!TextUtils.isEmpty(view.title)) {
-                    setTitle(view.title)
+            override fun onReceivedTitle(view: WebView, text: String) {
+                title = if (!TextUtils.isEmpty(view.title)) {
+                    view.title
+                } else {
+                    intent.getStringExtra(TITLE)
                 }
+                super.onReceivedTitle(view, text)
             }
         }
         initLeftClose()
@@ -85,11 +87,6 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
     private fun initJs() {
         webJs = WebJs(this, webView!!)
         webView!!.addJavascriptInterface(webJs, "android")
-        webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
-            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-            }
-        }
 
         webView!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
