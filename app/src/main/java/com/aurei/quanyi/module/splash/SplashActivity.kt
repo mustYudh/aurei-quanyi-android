@@ -58,12 +58,14 @@ class SplashActivity : BaseActivity() {
                 override fun onError(e: Throwable) {
                     goHome(activity)
                     finish()
+                    overridePendingTransition(R.anim.activity_alpha_out, R.anim.activity_alpha_out)
 
                 }
 
                 override fun onComplete() {
                     goHome(activity)
                     finish()
+                    overridePendingTransition(R.anim.activity_alpha_out, R.anim.activity_alpha_out)
 
                 }
             })

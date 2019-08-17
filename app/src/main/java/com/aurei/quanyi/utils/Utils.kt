@@ -3,7 +3,7 @@ package com.aurei.quanyi.utils
 import android.content.Context
 import android.widget.EditText
 import com.aurei.quanyi.APP
-import com.aurei.quanyi.module.web.WebViewActivity
+import com.aurei.quanyi.module.web.MainWebViewActivity
 import com.qianchang.optimizetax.data.UserProfile
 import com.yu.common.launche.LauncherHelper
 import com.yu.common.navigation.StatusBarUtils
@@ -34,26 +34,35 @@ fun EditText.getEditText(): String {
 }
 
 fun getBaseUrl(): String {
-    return  "http://m.aurei.cc:81/#"
+//    return  "http://m.aurei.cc:81/#"
 //    return "http://172.90.14.232:8080/#"
+    return "http://129.28.196.121:8080/#"
 }
 
 
-fun filtrationUrl(url: String, context: Context):String {
+fun filtrationUrl(url: String, context: Context, boolean: Boolean? = false): String {
     var result: String = ""
     if (url.contains("?")) {
-        var params =  ActionParams.parse(url).params
+        var params = ActionParams.parse(url).params
         if (params != null && params.size > 0) {
             params["fromApp"] = "1"
-            params["statusBarHeight"] = DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
+            params["statusBarHeight"] =
+                DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
             params["access_token"] = UserProfile.getToken()
+            if (boolean != null && boolean) {
+                params["openNewUrl"] = "1"
+            }
         } else {
-            params = HashMap<String,String>()
+            params = HashMap<String, String>()
             params["fromApp"] = "1"
-            params["statusBarHeight"] = DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
+            params["statusBarHeight"] =
+                DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat()).toString()
             params["access_token"] = UserProfile.getToken()
+            if (boolean != null && boolean) {
+                params["openNewUrl"] = "1"
+            }
         }
-        var filtrationUrl = ActionParams.parse(url).action  + "?"
+        var filtrationUrl = ActionParams.parse(url).action + "?"
         var position = 0
         params.map {
             position++
@@ -62,7 +71,10 @@ fun filtrationUrl(url: String, context: Context):String {
         }
         result = filtrationUrl
     } else {
-        result = url + "?" +  getParams(context)
+        result = url + "?" + getParams(context)
+        if (boolean != null && boolean) {
+            result += "&openNewUrl=1"
+        }
     }
     return result
 
@@ -73,13 +85,32 @@ fun getParams(context: Context): String {
 }
 
 fun goHome(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/index?${getParams(context)}",true))
+    LauncherHelper.from(context)
+        .startActivity(MainWebViewActivity.callIntent(context, "${getBaseUrl()}/index?${getParams(context)}", true))
 }
 
 fun getPassword(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/findPwd?fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}",false))
+    LauncherHelper.from(context).startActivity(
+        MainWebViewActivity.callIntent(
+            context,
+            "${getBaseUrl()}/findPwd?fromApp=1&statusBarHeight=${DensityUtil.px2dip(
+                StatusBarUtils.getStatusBarHeight(
+                    context
+                ).toFloat()
+            )}",
+            false
+        )
+    )
 }
 
 fun registerUrl(context: Context) {
-    LauncherHelper.from(context).startActivity(WebViewActivity.callIntent(context,"${getBaseUrl()}/registerPhone?fromApp=1&statusBarHeight=${DensityUtil.px2dip(StatusBarUtils.getStatusBarHeight(context).toFloat())}",false))
+    LauncherHelper.from(context).startActivity(
+        MainWebViewActivity.callIntent(
+            context,
+            "${getBaseUrl()}/registerPhone?fromApp=1&statusBarHeight=${DensityUtil.px2dip(
+                StatusBarUtils.getStatusBarHeight(context).toFloat()
+            )}",
+            false
+        )
+    )
 }

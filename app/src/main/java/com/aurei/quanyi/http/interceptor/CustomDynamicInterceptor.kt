@@ -1,5 +1,6 @@
 package com.qianchang.optimizetax.http.interceptor
 
+import android.text.TextUtils
 import com.qianchang.optimizetax.data.UserProfile
 import com.xuexiang.xhttp2.interceptor.BaseDynamicInterceptor
 import okhttp3.Interceptor
@@ -21,7 +22,7 @@ class CustomDynamicInterceptor : BaseDynamicInterceptor<CustomDynamicInterceptor
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request()
-    return if (UserProfile.isLogin) {
+    return if (TextUtils.isEmpty(UserProfile.getToken())) {
       chain.proceed(request
         .newBuilder()
         .post(request.body())

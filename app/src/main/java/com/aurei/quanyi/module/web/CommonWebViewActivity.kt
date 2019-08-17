@@ -1,5 +1,6 @@
 package com.aurei.quanyi.module.web
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -15,28 +16,32 @@ import android.webkit.CookieSyncManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.aurei.quanyi.R
-import com.aurei.quanyi.base.BaseActivity
+import com.aurei.quanyi.base.BaseBarActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
-import com.aurei.quanyi.utils.*
+import com.aurei.quanyi.utils.getBaseUrl
+import com.aurei.quanyi.utils.getParams
+import com.aurei.quanyi.utils.showToast
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.xuexiang.xhttp2.XHttp
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarUtils
+import com.yu.common.ui.BarIconContainer
 import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
-import kotlinx.android.synthetic.main.activity_common_webview.*
+import kotlinx.android.synthetic.main.main_web_view_activity.*
 import java.io.File
 
 
 /**
  * @author yudneghao
  */
-class WebViewActivity : BaseActivity(), WebViewViewer {
+class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
 
 
     private var webView: WebView? = null
@@ -46,7 +51,7 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
 
     override fun setView(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_common_webview)
+        setContentView(R.layout.common_web_view_activity)
         val webViewLayout = bindView<ProgressWebViewLayout>(R.id.webViewLayout)
         webView = webViewLayout.webView
         webView!!.setDownloadListener(WebViewDownLoadListener(activity))
@@ -58,12 +63,7 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
                 }
             }
         }
-        webView!!.webViewClient = object : WebViewClient() {
-
-            override fun onLoadResource(view: WebView, url: String) {
-                super.onLoadResource(view, filtrationUrl(url, activity!!))
-            }
-        }
+        initLeftClose()
         initJs()
         webJs?.setOnFixStatusBarListener(object : WebJs.FixStatusBarListener {
             override fun fix(need: Boolean) {
@@ -88,12 +88,6 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
-                if (newProgress >= 100) {
-                    splash_bg.visibility = View.GONE
-                    val res = resources
-                    val drawable = res.getDrawable(R.drawable.bkcolor)
-                    window.setBackgroundDrawable(drawable)
-                }
             }
         }
 
@@ -119,12 +113,8 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
                     return true
                 }
             }
+
         }
-    }
-
-
-    fun getData() {
-
     }
 
 
@@ -139,14 +129,24 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     }
 
+    @SuppressLint("CheckResult")
     override fun loadData() {
-        val showBg = intent.getBooleanExtra(SHOW_BG, true)
-        splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
         val intentUrl = intent.getStringExtra(WEB_URL)
         val url = if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
         Log.e("======>", "H5加载的url$url")
         synCookie(url)
-        webView!!.loadUrl(url)
+        webView?.postDelayed({
+            webView!!.loadUrl(url)
+        }, 1000)
+        val permiss = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        if (Build.VERSION.SDK_INT >= 23) {
+            val rxPermissions = RxPermissions(this)
+            rxPermissions.request(*permiss).subscribe {}
+        }
     }
 
     private fun synCookie(url: String) {
@@ -182,14 +182,14 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
 
     companion object {
         val WEB_URL = "webUrl"
-        val SHOW_BG = "show_bg"
+        val TITLE = "title"
         /**
          * @param url url
          */
-        fun callIntent(context: Context, url: String, show: Boolean): Intent {
-            val intent = Intent(context, WebViewActivity::class.java)
+        fun callIntent(context: Context, url: String, title: String): Intent {
+            val intent = Intent(context, CommonWebViewActivity::class.java)
             intent.putExtra(WEB_URL, url)
-            intent.putExtra(SHOW_BG, show)
+            intent.putExtra(TITLE, title)
             return intent
         }
     }
@@ -212,19 +212,18 @@ class WebViewActivity : BaseActivity(), WebViewViewer {
         webView?.loadUrl("javascript:getPhotoSuccess(${Gson().toJson(url)})")
     }
 
-    private val pressHandle = PressHandle(this)
 
-
-    override fun onBackPressed() {
-        if (webView!!.canGoBack()) {
-            super.onBackPressed()
-        } else {
-            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
-                super.onBackPressed()
+    private fun initLeftClose() {
+        bindView<BarIconContainer>(R.id.close).setOnClickListener {
+            onBackPressed()
+        }
+        bindView<BarIconContainer>(R.id.action_back).setOnClickListener {
+            if (webView != null && webView!!.canGoBack()) {
+                webView!!.goBack()
+                bindView<BarIconContainer>(R.id.close, webView != null && webView!!.canGoBack())
+            } else {
+                onBackPressed()
             }
         }
-
     }
-
-
 }

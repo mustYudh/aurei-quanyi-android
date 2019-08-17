@@ -2,12 +2,15 @@ package com.aurei.quanyi.module.web.js
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.aurei.quanyi.module.login.LoginActivity
-import com.aurei.quanyi.module.web.WebViewActivity
+import com.aurei.quanyi.module.web.CommonWebViewActivity
+import com.aurei.quanyi.module.web.MainWebViewActivity
 import com.aurei.quanyi.utils.filtrationUrl
 import com.aurei.quanyi.utils.getBaseUrl
 import com.aurei.quanyi.utils.getParams
@@ -22,7 +25,7 @@ import com.yu.common.launche.LauncherHelper
  * @author chenwei
  * @date 2017/8/30
  */
-class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, webView) {
+class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView) {
 
     //退出登录
     @JavascriptInterface
@@ -30,17 +33,23 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
         Log.e("======>bridge-logout", "触发")
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            Log.e("======>退出登录后登陆", "返回")
-            webView.clearCache(true)
-            webView.loadUrl("${getBaseUrl()}/person?${getParams(activity!!)}")
-//            webView.reload()
+            LauncherHelper.from(activity).startActivity(
+                MainWebViewActivity.callIntent(
+                    activity!!,
+                    filtrationUrl("${getBaseUrl()}/person?${getParams(activity!!)}", activity!!),
+                    false
+                )
+            )
         }, {
-            //            Log.e("======>","返回${getBaseUrl()}/index?${getParams(activity!!)}")
-            webView.clearCache(true)
-            webView.loadUrl("${getBaseUrl()}/index?${getParams(activity!!)}")
-//            webView.reload()
-//            LauncherHelper.from(activity).startActivity(WebViewActivity.callIntent(activity!!, "", false))
-//            finish()
+            LauncherHelper.from(activity).startActivity(
+                MainWebViewActivity.callIntent(
+                    activity!!,
+                    filtrationUrl("${getBaseUrl()}/index?${getParams(activity!!)}", activity!!),
+                    false
+                )
+            )
+            activity?.finish()
+
         }))
     }
 
@@ -48,40 +57,37 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
         Log.e("======>bridge-login", "触发$url$isCenter")
-        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            if (!isCenter) {
+        if (TextUtils.isEmpty(UserProfile.getToken())) {
+            LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
+                LauncherHelper.from(activity).startActivity(
+                    MainWebViewActivity.callIntent(
+                        activity!!,
+                        filtrationUrl("${getBaseUrl()}$url", activity!!),
+                        false
+                    )
+                )
+                activity?.finish()
+            }, {
                 webView.clearCache(true)
-                webView.goBack()
-            }
-            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
-//            webView.reload()
-            Log.e("=======>重载的URL", filtrationUrl("${getBaseUrl()}$url", activity!!))
-        }, {
-            webView.clearCache(true)
-            if (isCenter) {
-                webView.loadUrl("${getBaseUrl()}/index")
+                if (isCenter) {
+                    webView.loadUrl("${getBaseUrl()}/index")
 //                webView.reload()
-            } else {
-                webView.loadUrl("${getBaseUrl()}$url")
-            }
+                } else {
+                    webView.loadUrl("${getBaseUrl()}$url")
+                }
 
-        }))
+            }))
+        } else {
+            Log.e("=======>重载的URL1", filtrationUrl("${getBaseUrl()}$url", activity!!))
+//            webView.clearCache(true )
+            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
+        }
     }
 
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
     @JavascriptInterface
     fun goBack(delta: Int) {
-//        Log.e("=====>",delta.toString())
-//        if (webView.canGoBackOrForward(delta)) {
-//            webView.goBackOrForward(delta)
-//        } else if (!webView.canGoBack()) {
-//            val pressHandle = PressHandle(activity)
-//            if (!pressHandle.handlePress(KeyEvent.KEYCODE_BACK)) {
-//                activity?.finish()
-//            }
-//        } else {
         activity?.finish()
-//        }
     }
 
     //拍照
@@ -163,6 +169,18 @@ class WebJs(activity: WebViewActivity, webView: WebView) : BaseWebJs(activity, w
 
     fun setOnFixStatusBarListener(listener: FixStatusBarListener) {
         this.fixStatusBarListener = listener
+    }
+
+
+    @JavascriptInterface
+    fun openNewWebView(url: String, title: String) {
+        Log.e("======>二级页面", filtrationUrl("${getBaseUrl()}$url", activity!!, true))
+        LauncherHelper.from(activity).startActivity(
+            CommonWebViewActivity.callIntent(
+                activity!!, filtrationUrl("${getBaseUrl()}$url", activity!!, true),
+                title
+            )
+        )
     }
 
 }

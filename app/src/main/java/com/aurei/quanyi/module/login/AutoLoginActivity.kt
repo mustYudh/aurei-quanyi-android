@@ -52,7 +52,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
         spannableBuilder.setSpan(colorSpan, 5, 14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         val clickableSpanOne: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
-//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(MainWebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -74,7 +74,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
                 isAgree = !isAgree
             }
             R.id.what_is_avoid_close_login -> {
-//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(MainWebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
             R.id.login -> {
                 if (isAgree) {
@@ -84,7 +84,7 @@ class AutoLoginActivity : BaseBarActivity(), View.OnClickListener,AutoLoginViewe
                 }
             }
             R.id.problem -> {
-//                launchHelper.startActivity(WebViewActivity.callIntent(activity, "https:www.baidu.com"))
+//                launchHelper.startActivity(MainWebViewActivity.callIntent(activity, "https:www.baidu.com"))
             }
             R.id.normal_login -> {
                 finish()

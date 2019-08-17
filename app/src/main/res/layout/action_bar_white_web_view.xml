@@ -4,17 +4,84 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/action_bar"
                 android:layout_width="match_parent"
-                android:background="#F0F2F2"
                 android:layout_height="@dimen/action_bar_all_height"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/action_bar_height_top">
+                android:paddingTop="@dimen/action_bar_height_top"
+                android:clipChildren="false"
+>
+
+    <LinearLayout
+            android:id="@+id/select_city"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dp"
+            android:gravity="center_vertical|left"
+            android:orientation="horizontal"
+    >
+
+        <com.yu.common.ui.BarIconContainer
+                android:id="@+id/action_back"
+                android:layout_width="48dp"
+                android:layout_height="@dimen/action_bar_height"
+                app:bar_icon="@drawable/ic_back_arrow_black"
+        />
 
 
-    <com.yu.common.ui.BarIconContainer
-            android:id="@+id/back"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            app:bar_icon="@drawable/ic_back"/>
+        <com.yu.common.ui.BarIconContainer
+                android:id="@+id/close"
+                android:layout_width="48dp"
+                android:layout_height="@dimen/action_bar_height"
+                app:bar_unread_icon="@drawable/ic_action_close_black"
+        />
+
+        <com.yu.common.ui.BarIconContainer
+                android:id="@+id/action_sort"
+                android:layout_width="48dp"
+                android:layout_height="@dimen/action_bar_height"
+                android:visibility="gone"
+        />
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:id="@+id/action_bar_right_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dp"
+            android:gravity="center_vertical|right"
+            android:orientation="horizontal"
+    >
+
+
+        <com.yu.common.ui.DelayClickTextView
+                android:id="@+id/action_right_menu_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                android:visibility="gone"
+        />
+
+
+        <com.yu.common.ui.DelayClickTextView
+                android:id="@+id/share_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="12dp"
+                android:drawablePadding="5.3dp"
+                android:gravity="center"
+                android:text="分享"
+                android:textColor="#212121"
+                android:textSize="14sp"
+                android:visibility="gone"
+        />
+
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -27,7 +94,6 @@
     >
 
         <com.yu.common.ui.DelayClickTextView
-                tools:text="编辑资料"
                 android:id="@+id/action_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,11 +101,13 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:maxWidth="190dp"
-                android:textColor="@color/black"
+                android:textColor="#e63d3d3d"
                 android:textSize="17sp"
+                tools:text="123"
         />
 
-    </LinearLayout>
+        ]
 
+    </LinearLayout>
 
 </RelativeLayout>

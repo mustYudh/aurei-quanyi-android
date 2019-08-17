@@ -8,11 +8,11 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <!--免密登录-->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
             android:usesCleartextTraffic="true"
@@ -40,7 +40,7 @@
         <activity
                 android:theme="@style/SplashThem"
                 android:name=".module.splash.SplashActivity"
-                  android:screenOrientation="portrait">
+                android:screenOrientation="portrait">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN"/>-->
 
@@ -53,18 +53,18 @@
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="adjustResize|stateHidden">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
         <!--android:theme="@style/SplashThem"-->
         <activity
-
-                android:name=".module.web.WebViewActivity"
-                  android:screenOrientation="portrait">
+                android:theme="@style/Theme"
+                android:name=".module.web.MainWebViewActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
-            <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -75,12 +75,16 @@
                 android:name="cn.com.chinatelecom.account.sdk.ui.AuthActivity"
                 android:exported="false"
                 android:theme="@style/authActivityTheme"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="cn.com.chinatelecom.account.sdk.ui.PrivacyWebviewActivity"
                 android:exported="false"
                 android:theme="@style/authActivityTheme"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="portrait"/>
+
+        <activity android:name=".module.web.CommonWebViewActivity"
+                  android:screenOrientation="portrait"
+        />
     </application>
 
 </manifest>
