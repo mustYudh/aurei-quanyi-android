@@ -57,31 +57,17 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
         Log.e("======>bridge-login", "触发$url$isCenter")
-        if (TextUtils.isEmpty(UserProfile.getToken())) {
-            LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-                LauncherHelper.from(activity).startActivity(
-                    MainWebViewActivity.callIntent(
-                        activity!!,
-                        filtrationUrl("${getBaseUrl()}$url", activity!!),
-                        false
-                    )
+        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
+            LauncherHelper.from(activity).startActivity(
+                CommonWebViewActivity.callIntent(
+                    activity!!,
+                    filtrationUrl("${getBaseUrl()}$url", activity!!, true), ""
                 )
-                activity?.finish()
-            }, {
-                webView.clearCache(true)
-                if (isCenter) {
-                    webView.loadUrl("${getBaseUrl()}/index")
-//                webView.reload()
-                } else {
-                    webView.loadUrl("${getBaseUrl()}$url")
-                }
+            )
+        }, {
 
-            }))
-        } else {
-            Log.e("=======>重载的URL1", filtrationUrl("${getBaseUrl()}$url", activity!!))
-//            webView.clearCache(true )
-            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
-        }
+
+        }))
     }
 
     // //返回 delta 返回的页面数，如果 delta 大于现有页面数，则返回到首页
@@ -181,6 +167,32 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
                 title
             )
         )
+    }
+
+
+    @JavascriptInterface
+    fun setTitle(title: String) {
+        if (!TextUtils.isEmpty(title) && listener != null) {
+            listener?.setTitle(title)
+        }
+    }
+
+
+    private var listener: GetTitleListener? = null
+
+    @JavascriptInterface
+    fun finishWebView() {
+        activity?.finish()
+    }
+
+
+    interface GetTitleListener {
+        fun setTitle(title: String)
+    }
+
+
+    fun setOnGetTitleListener(listener: GetTitleListener) {
+        this.listener = listener
     }
 
 }

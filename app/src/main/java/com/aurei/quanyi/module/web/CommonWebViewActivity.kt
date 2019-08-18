@@ -11,10 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseBarActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
@@ -34,7 +31,8 @@ import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.ui.BarIconContainer
 import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
-import kotlinx.android.synthetic.main.main_web_view_activity.*
+import kotlinx.android.synthetic.main.common_web_view_activity.*
+import kotlinx.android.synthetic.main.main_web_view_activity.webViewLayout
 import java.io.File
 
 
@@ -111,6 +109,15 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                 }
             }
 
+            override fun onPageFinished(view: WebView?, url: String?) {
+                loading.visibility = View.GONE
+                super.onPageFinished(view, url)
+            }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                loading.visibility = View.GONE
+                super.onReceivedError(view, request, error)
+            }
         }
     }
 
@@ -223,4 +230,5 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
             }
         }
     }
+
 }

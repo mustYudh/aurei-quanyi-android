@@ -35,6 +35,9 @@ import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import kotlinx.android.synthetic.main.main_web_view_activity.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 
 
@@ -69,6 +72,11 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
                 fixStatusBar(need)
             }
 
+        })
+        webJs?.setOnGetTitleListener(object : WebJs.GetTitleListener {
+            override fun setTitle(text: String) {
+                title = text
+            }
         })
     }
 
@@ -141,6 +149,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 
     @SuppressLint("CheckResult")
     override fun loadData() {
+        EventBus.getDefault().register(this)
         val showBg = intent.getBooleanExtra(SHOW_BG, true)
         splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
         val intentUrl = intent.getStringExtra(WEB_URL)
@@ -189,6 +198,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
             webView!!.removeAllViews()
             webView!!.destroy()
         }
+        EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
 
@@ -238,5 +248,12 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: String) {
+        if (!TextUtils.isEmpty(event)) {
+            webView?.loadUrl(event)
+        }
+    }
 
 }

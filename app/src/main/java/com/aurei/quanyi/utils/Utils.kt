@@ -3,6 +3,7 @@ package com.aurei.quanyi.utils
 import android.content.Context
 import android.widget.EditText
 import com.aurei.quanyi.APP
+import com.aurei.quanyi.module.web.CommonWebViewActivity
 import com.aurei.quanyi.module.web.MainWebViewActivity
 import com.qianchang.optimizetax.data.UserProfile
 import com.yu.common.launche.LauncherHelper
@@ -91,26 +92,18 @@ fun goHome(context: Context) {
 
 fun getPassword(context: Context) {
     LauncherHelper.from(context).startActivity(
-        MainWebViewActivity.callIntent(
-            context,
-            "${getBaseUrl()}/findPwd?fromApp=1&statusBarHeight=${DensityUtil.px2dip(
-                StatusBarUtils.getStatusBarHeight(
-                    context
-                ).toFloat()
-            )}",
-            false
+        CommonWebViewActivity.callIntent(
+            context, "${getBaseUrl()}/findPwd?openNewUrl=1"
+            ,
+            "忘记密码吗"
         )
     )
 }
 
 fun registerUrl(context: Context) {
     LauncherHelper.from(context).startActivity(
-        MainWebViewActivity.callIntent(
-            context,
-            "${getBaseUrl()}/registerPhone?fromApp=1&statusBarHeight=${DensityUtil.px2dip(
-                StatusBarUtils.getStatusBarHeight(context).toFloat()
-            )}",
-            false
+        CommonWebViewActivity.callIntent(
+            context, "${getBaseUrl()}/registerPhone?openNewUrl=1", "注册"
         )
     )
 }
