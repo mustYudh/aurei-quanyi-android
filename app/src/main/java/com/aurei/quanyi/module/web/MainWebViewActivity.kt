@@ -18,13 +18,13 @@ import android.webkit.WebViewClient
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
+import com.aurei.quanyi.module.web.bea.UploadStatus.uploadSuccess
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
 import com.aurei.quanyi.utils.PressHandle
 import com.aurei.quanyi.utils.getBaseUrl
 import com.aurei.quanyi.utils.getParams
-import com.aurei.quanyi.utils.showToast
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -51,6 +51,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
     private var webJs: WebJs? = null
     @PresenterLifeCycle
     private val mPresenter = WebViewPresenter(this)
+
 
 
     override fun setView(savedInstanceState: Bundle?) {
@@ -230,7 +231,8 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
     }
 
     override fun uploadImageSuccess(url: UploadInfo?) {
-        showToast("上传成功")
+//        showToast("上传成功")
+        uploadSuccess = true
         webView?.loadUrl("javascript:getPhotoSuccess(${Gson().toJson(url)})")
     }
 
@@ -254,6 +256,15 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
         if (!TextUtils.isEmpty(event)) {
             webView?.loadUrl(event)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (uploadSuccess) {
+            webView?.reload()
+            uploadSuccess = false
+        }
+
     }
 
 }

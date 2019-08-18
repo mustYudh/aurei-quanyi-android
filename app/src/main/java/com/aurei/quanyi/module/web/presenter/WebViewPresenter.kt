@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.aurei.quanyi.http.lifecycle.RxLifecycle
 import com.aurei.quanyi.http.loading.NetLoadingDialog
 import com.aurei.quanyi.module.web.bea.UploadInfo
+import com.qianchang.optimizetax.data.UserProfile
 import com.qianchang.optimizetax.http.subscriber.TipRequestSubscriber
 import com.xuexiang.xhttp2.XHttp
 import com.xuexiang.xhttp2.exception.ApiException
@@ -23,7 +24,9 @@ class WebViewPresenter(viewer: WebViewViewer) : BaseViewPresenter<WebViewViewer>
         XHttp.post("/web/user_info/upload")
             .uploadFile(
                 "file", file
-            ) { _, _, _ -> }.execute(UploadInfo::class.java)
+            ) { _, _, _ -> }
+            .headers("X-Access-Token", UserProfile.getToken())
+            .execute(UploadInfo::class.java)
             .compose(RxLifecycle.with(activity).bindToLifecycle<UploadInfo>()).subscribeWith(
                 object : TipRequestSubscriber<UploadInfo>() {
                     override fun onSuccess(t: UploadInfo?) {
