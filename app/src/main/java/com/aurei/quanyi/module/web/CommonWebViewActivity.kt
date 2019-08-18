@@ -29,7 +29,6 @@ import com.xuexiang.xhttp2.XHttp
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarUtils
 import com.yu.common.ui.BarIconContainer
-import com.yu.common.web.ProgressWebChromeClient
 import com.yu.common.web.ProgressWebViewLayout
 import kotlinx.android.synthetic.main.common_web_view_activity.*
 import kotlinx.android.synthetic.main.main_web_view_activity.webViewLayout
@@ -52,8 +51,9 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         setContentView(R.layout.common_web_view_activity)
         val webViewLayout = bindView<ProgressWebViewLayout>(R.id.webViewLayout)
         webView = webViewLayout.webView
+        webViewLayout.progressBar.visibility = View.GONE
         webView!!.setDownloadListener(WebViewDownLoadListener(activity))
-        webView!!.webChromeClient = object : ProgressWebChromeClient(webViewLayout.progressBar) {
+        webView!!.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView, text: String) {
                 title = if (!TextUtils.isEmpty(view.title)) {
                     view.title

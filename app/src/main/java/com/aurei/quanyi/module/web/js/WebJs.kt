@@ -56,16 +56,36 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
 
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
+//        Log.e("======>bridge-login", "触发$url$isCenter")
+//        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
+//            LauncherHelper.from(activity).startActivity(
+//                CommonWebViewActivity.callIntent(
+//                    activity!!,
+//                    filtrationUrl("${getBaseUrl()}$url", activity!!, true), ""
+//                )
+//            )
+//        }, {
+//
+//
+//        }))
         Log.e("======>bridge-login", "触发$url$isCenter")
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            LauncherHelper.from(activity).startActivity(
-                CommonWebViewActivity.callIntent(
-                    activity!!,
-                    filtrationUrl("${getBaseUrl()}$url", activity!!, true), ""
-                )
-            )
+            //            if (!isCenter) {
+//                webView.clearCache(true)
+//                webView.goBack()
+//            }
+            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
+            webView.reload()
+//            webView.reload()
+            Log.e("=======>重载的URL", filtrationUrl("${getBaseUrl()}$url", activity!!))
         }, {
-
+            webView.clearCache(true)
+            if (isCenter) {
+                webView.loadUrl("${getBaseUrl()}/index")
+//                webView.reload()
+            } else {
+                webView.loadUrl("${getBaseUrl()}$url")
+            }
 
         }))
     }
@@ -182,7 +202,7 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
 
     @JavascriptInterface
     fun setTitle(title: String) {
-        Log.e("=======>title",title)
+        Log.e("=======>title", title)
         if (!TextUtils.isEmpty(title) && listener != null) {
             listener?.setTitle(title)
         }
