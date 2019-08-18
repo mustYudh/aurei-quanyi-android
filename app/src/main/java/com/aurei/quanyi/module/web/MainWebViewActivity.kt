@@ -73,11 +73,6 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
             }
 
         })
-        webJs?.setOnGetTitleListener(object : WebJs.GetTitleListener {
-            override fun setTitle(text: String) {
-                title = text
-            }
-        })
     }
 
 
@@ -156,9 +151,9 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
         val url = if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
         Log.e("======>", "H5加载的url$url")
         synCookie(url)
-        webView?.postDelayed({
-            webView!!.loadUrl(url)
-        }, 1000)
+//        webView?.postDelayed({
+        webView!!.loadUrl(url)
+//        }, 1000)
         val permiss = arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -168,6 +163,11 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
             val rxPermissions = RxPermissions(this)
             rxPermissions.request(*permiss).subscribe {}
         }
+        webJs?.setOnGetTitleListener(object : WebJs.GetTitleListener {
+            override fun setTitle(title: String) {
+//                setTitle(title)
+            }
+        })
     }
 
     private fun synCookie(url: String) {

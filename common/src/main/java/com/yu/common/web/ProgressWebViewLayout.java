@@ -39,7 +39,7 @@ public class ProgressWebViewLayout extends LinearLayout {
 
     //设置加载进度监听
     doCommonSetting();
-//    addProgressChromeClient();
+    addProgressChromeClient();
   }
 
   /**

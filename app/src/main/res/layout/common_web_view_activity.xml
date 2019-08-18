@@ -14,6 +14,7 @@
     />
 
     <com.yu.common.web.ProgressWebViewLayout
+            android:layout_marginTop="-46dp"
             android:id="@+id/webViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
