@@ -58,14 +58,28 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
-            webView.reload()
+            if (url == "/msgList") {
+                LauncherHelper.from(activity).startActivity(
+                    CommonWebViewActivity.callIntent(
+                        activity!!, filtrationUrl("${getBaseUrl()}$url", activity!!),
+                        ""
+                    )
+                )
+            } else {
+                webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
+                webView.reload()
+            }
         }, {
             webView.clearCache(true)
             if (isCenter) {
                 webView.loadUrl("${getBaseUrl()}/index")
             } else {
-                webView.loadUrl("${getBaseUrl()}$url")
+                if (url == "/msgList") {
+                    webView.loadUrl("${getBaseUrl()}/index")
+                } else {
+                    webView.loadUrl(filtrationUrl("${getBaseUrl()}$url${getParams(activity!!)}", activity!!))
+                }
+
             }
         }))
     }
