@@ -111,6 +111,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 loading.visibility = View.GONE
+                bindView<BarIconContainer>(R.id.close, webView != null && webView?.canGoBack()!!)
                 super.onPageFinished(view, url)
             }
 
@@ -132,6 +133,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
 
 
     }
+
 
     @SuppressLint("CheckResult")
     override fun loadData() {

@@ -29,11 +29,13 @@
 
 
         <com.yu.common.ui.BarIconContainer
+                android:visibility="gone"
                 android:id="@+id/close"
                 android:layout_width="48dp"
                 android:layout_height="@dimen/action_bar_height"
-                app:bar_unread_icon="@drawable/ic_action_close_black"
+                app:bar_icon="@drawable/ic_action_close_black"
         />
+
 
         <com.yu.common.ui.BarIconContainer
                 android:id="@+id/action_sort"
