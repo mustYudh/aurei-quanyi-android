@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.login.LoginActivity
 import com.aurei.quanyi.module.web.CommonWebViewActivity
 import com.aurei.quanyi.module.web.MainWebViewActivity
@@ -25,7 +26,7 @@ import com.yu.common.launche.LauncherHelper
  * @author chenwei
  * @date 2017/8/30
  */
-class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView) {
+class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webView) {
 
     //退出登录
     @JavascriptInterface
@@ -56,28 +57,9 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
 
     @JavascriptInterface
     fun login(url: String, isCenter: Boolean) {
-//        Log.e("======>bridge-login", "触发$url$isCenter")
-//        LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-//            LauncherHelper.from(activity).startActivity(
-//                CommonWebViewActivity.callIntent(
-//                    activity!!,
-//                    filtrationUrl("${getBaseUrl()}$url", activity!!, true), ""
-//                )
-//            )
-//        }, {
-//
-//
-//        }))
-        Log.e("======>bridge-login", "触发$url$isCenter")
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
-            //            if (!isCenter) {
-//                webView.clearCache(true)
-//                webView.goBack()
-//            }
             webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
             webView.reload()
-//            webView.reload()
-            Log.e("=======>重载的URL", filtrationUrl("${getBaseUrl()}$url", activity!!))
         }, {
             webView.clearCache(true)
             if (isCenter) {
@@ -85,7 +67,6 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
             } else {
                 webView.loadUrl("${getBaseUrl()}$url")
             }
-
         }))
     }
 
@@ -212,9 +193,20 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
 
     @JavascriptInterface
     fun finishWebView() {
-        activity?.finish()
+        if (activityNotFinish(activity)) {
+            activity?.finish()
+        }
+
     }
 
+
+    fun activityNotFinish(activity: Activity?): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            activity != null && !activity.isFinishing && !activity.isDestroyed
+        } else {
+            activity != null && !activity.isFinishing
+        }
+    }
 
     interface GetTitleListener {
         fun setTitle(title: String)
