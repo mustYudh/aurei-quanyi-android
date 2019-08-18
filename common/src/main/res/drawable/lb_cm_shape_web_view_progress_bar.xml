@@ -4,9 +4,9 @@
   <item android:id="@android:id/background">
     <shape>
       <gradient
-          android:angle="0"
-          android:endColor="@android:color/transparent"
-          android:startColor="@android:color/transparent"/>
+              android:angle="0"
+              android:endColor="#FE600F"
+              android:startColor="#F5F6F8"/>
     </shape>
   </item>
 
@@ -14,9 +14,9 @@
     <clip>
       <shape>
         <gradient
-            android:angle="0"
-            android:endColor="@android:color/transparent"
-            android:startColor="@android:color/transparent"/>
+                android:angle="0"
+                android:endColor="#FE600F"
+                android:startColor="#FE600F"/>
       </shape>
     </clip>
   </item>

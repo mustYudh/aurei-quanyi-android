@@ -82,7 +82,6 @@ class WebJs(activity: Activity, webView: WebView) : BaseWebJs(activity, webView)
             webView.clearCache(true)
             if (isCenter) {
                 webView.loadUrl("${getBaseUrl()}/index")
-//                webView.reload()
             } else {
                 webView.loadUrl("${getBaseUrl()}$url")
             }
