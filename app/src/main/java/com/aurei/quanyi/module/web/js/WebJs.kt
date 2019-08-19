@@ -28,6 +28,8 @@ import com.yu.common.launche.LauncherHelper
  */
 class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webView) {
 
+
+
     //退出登录
     @JavascriptInterface
     fun logout() {
@@ -66,8 +68,24 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                     )
                 )
             } else {
-                webView.loadUrl(filtrationUrl("${getBaseUrl()}$url", activity!!))
-                webView.reload()
+                if (activity is CommonWebViewActivity) {
+                    LauncherHelper.from(activity).startActivity(
+                        CommonWebViewActivity.callIntent(
+                            activity!!, filtrationUrl("${getBaseUrl()}$url", activity!!),
+                            ""
+                        )
+                    )
+                } else if (activity is MainWebViewActivity) {
+                    LauncherHelper.from(activity).startActivity(
+                        MainWebViewActivity.callIntent(
+                            activity!!,
+                            filtrationUrl("${getBaseUrl()}$url", activity!!),
+                            false
+                        )
+                    )
+                }
+                activity?.finish()
+
             }
         }, {
             webView.clearCache(true)
