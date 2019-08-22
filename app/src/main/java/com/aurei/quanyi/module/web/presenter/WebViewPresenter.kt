@@ -21,7 +21,7 @@ class WebViewPresenter(viewer: WebViewViewer) : BaseViewPresenter<WebViewViewer>
     @SuppressLint("CheckResult")
     fun uploadImage(file: File) {
         NetLoadingDialog.showLoading(activity, false)
-        XHttp.post("/web/user_info/upload")
+        XHttp.post("/api/user_info/upload")
             .uploadFile(
                 "file", file
             ) { _, _, _ -> }

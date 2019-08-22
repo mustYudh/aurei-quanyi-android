@@ -66,13 +66,13 @@ class APP : BaseApp() {
     private fun getBaseUrl(): String {
         return when (BuildConfig.API_MODE) {
             0 -> {
-                "http://m.aurei.cc:8081"
+                "http://m.aurei.com.cn"
             }
             1 -> {
-                "https://m.aurei.cc:8081"
+                "http://m.aurei.com.cn"
             }
             else ->
-                "https://m.aurei.cc:8081"
+                "http://m.aurei.com.cn"
         }
     }
 }

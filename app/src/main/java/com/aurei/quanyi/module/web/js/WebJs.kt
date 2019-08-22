@@ -192,7 +192,8 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
 
     @JavascriptInterface
     fun openNewWebView(url: String, title: String) {
-        var resulr = if (url.startsWith("http") || url.startsWith("https")) {
+        Log.e("======>二级页面", filtrationUrl("${getBaseUrl()}$url", activity!!, true) + "title:" + title)
+        if (url.startsWith("http") || url.startsWith("https")) {
             LauncherHelper.from(activity).startActivity(
                 CommonWebViewActivity.callIntent(
                     activity!!, url,
@@ -200,7 +201,6 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 )
             )
         } else {
-            Log.e("======>二级页面", filtrationUrl("${getBaseUrl()}$url", activity!!, true))
             LauncherHelper.from(activity).startActivity(
                 CommonWebViewActivity.callIntent(
                     activity!!, filtrationUrl("${getBaseUrl()}$url", activity!!, true),

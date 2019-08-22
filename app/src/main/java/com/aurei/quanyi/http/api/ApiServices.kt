@@ -9,6 +9,6 @@ import io.reactivex.Observable
  * @date 2019-07-05
  */
 interface ApiServices {
-    @NetMethod(ParameterNames = ["username","password"],Url = "/web/user/login")
+    @NetMethod(ParameterNames = ["username","password"],Url = "/api/user/login")
     fun login(username: String,password: String): Observable<UserInfo>
 }

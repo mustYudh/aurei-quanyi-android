@@ -19,8 +19,6 @@ import com.aurei.quanyi.module.web.bea.UploadStatus.uploadSuccess
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
-import com.aurei.quanyi.utils.getBaseUrl
-import com.aurei.quanyi.utils.getParams
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -47,7 +45,6 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
     private val mPresenter = WebViewPresenter(this)
 
 
-
     override fun setView(savedInstanceState: Bundle?) {
         setContentView(R.layout.common_web_view_activity)
         val webViewLayout = bindView<ProgressWebViewLayout>(R.id.webViewLayout)
@@ -56,10 +53,10 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         webView!!.setDownloadListener(WebViewDownLoadListener(activity))
         webView!!.webChromeClient = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView, text: String) {
-                title = if (!TextUtils.isEmpty(view.title)) {
-                    view.title
-                } else {
+                title = if (!TextUtils.isEmpty(intent.getStringExtra(TITLE))) {
                     intent.getStringExtra(TITLE)
+                } else {
+                    view.title
                 }
                 super.onReceivedTitle(view, text)
             }
@@ -102,6 +99,11 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                     try {
                         intent.data = Uri.parse(url)
                         startActivity(intent)
+//                        if (url.startsWith("https://wx.tenpay.com")) {
+//                            val extraHeaders = HashMap<String, String>()
+//                            extraHeaders["Referer"] = "http://m.aurei.com.cn"
+//                            view.loadUrl(url, extraHeaders)
+//                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -139,11 +141,10 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
     @SuppressLint("CheckResult")
     override fun loadData() {
         val intentUrl = intent.getStringExtra(WEB_URL)
-        val url = if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
-        Log.e("======>", "H5加载的url$url")
-        synCookie(url)
+        Log.e("======>", "H5加载的url$intentUrl")
+        synCookie(intentUrl)
         webView?.postDelayed({
-            webView!!.loadUrl(url)
+            webView!!.loadUrl(intentUrl)
         }, 1000)
         val permiss = arrayOf(
             Manifest.permission.CAMERA,
