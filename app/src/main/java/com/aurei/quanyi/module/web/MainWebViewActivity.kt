@@ -11,10 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.web.bea.UploadInfo
@@ -51,7 +48,6 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
     private var webJs: WebJs? = null
     @PresenterLifeCycle
     private val mPresenter = WebViewPresenter(this)
-
 
 
     override fun setView(savedInstanceState: Bundle?) {
@@ -102,33 +98,41 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 
         webView!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                val uri = Uri.parse(url)
-                val scheme = uri.getScheme()
-                if (TextUtils.isEmpty(scheme)) {
-                    return true
-                }
-                if (scheme == "http" || scheme == "https") {
-                    //处理http协议
-                    return super.shouldOverrideUrlLoading(view, url)
-                } else {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    try {
-                        intent.data = Uri.parse(url)
+                try {
+                    if (url.startsWith("weixin://wap/pay?") // 微信
+                        || url.startsWith("alipays://") // 支付宝
+                        || url.startsWith("mailto://") // 邮件
+                        || url.startsWith("tel:")// 电话
+                        || url.startsWith("dianping://")// 大众点评
+// 其他自定义的scheme
+                    ) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                        return true
+                    } else if (url.startsWith("https://wx.tenpay.com")) {
+                        val extraHeaders = HashMap<String, String>()
+                        extraHeaders["Referer"] = "http://m.aurei.com.cn"
+                        view.loadUrl(url, extraHeaders)
+                        return true
                     }
-
+                } catch (e: Exception) {
                     return true
                 }
+                view.loadUrl(url)
+                return true
+            }
+
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view?.loadUrl(request?.getUrl().toString())
+                } else {
+                    view?.loadUrl(request.toString())
+                }
+                return true
             }
 
         }
-    }
-
-
-    fun getData() {
-
     }
 
 
