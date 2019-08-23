@@ -56,7 +56,12 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                 title = if (!TextUtils.isEmpty(intent.getStringExtra(TITLE))) {
                     intent.getStringExtra(TITLE)
                 } else {
-                    view.title
+                    if (view.title != null && view.title == "weixin") {
+                        "支付"
+                    } else {
+                        view.title
+                    }
+
                 }
                 super.onReceivedTitle(view, text)
             }
@@ -117,6 +122,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         }
         webView!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                Log.e("======>哈哈哈哈",url)
                 try {
                     if (url.startsWith("weixin://wap/pay?") // 微信
                         || url.startsWith("alipays://") // 支付宝
@@ -125,10 +131,12 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                         || url.startsWith("dianping://")// 大众点评
 // 其他自定义的scheme
                     ) {
+                        title = "支付"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
                         return true
                     } else if (url.startsWith("https://wx.tenpay.com")) {
+                        title = "支付"
                         val extraHeaders = HashMap<String, String>()
                         extraHeaders["Referer"] = "http://m.aurei.com.cn"
                         view.loadUrl(url, extraHeaders)
