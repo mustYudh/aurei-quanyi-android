@@ -122,7 +122,6 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         }
         webView!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                Log.e("======>哈哈哈哈", url)
                 try {
                     if (url.startsWith("weixin://wap/pay?") // 微信
                         || url.startsWith("alipays://") // 支付宝

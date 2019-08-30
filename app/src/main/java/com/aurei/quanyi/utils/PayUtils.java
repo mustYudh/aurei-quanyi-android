@@ -77,12 +77,12 @@ public class PayUtils {
 
         } else if (type == 2) {
             PayReq request = new PayReq();
-            request.appId = info.appid;
-            request.partnerId = info.partnerid;
-            request.prepayId = info.prepayid;
+            request.appId = info.appId;
+            request.partnerId = info.partnerId;
+            request.prepayId = info.prepayId;
             request.packageValue = info.packageX;
-            request.nonceStr = info.noncestr;
-            request.timeStamp = info.timestamp;
+            request.nonceStr = info.nonceStr;
+            request.timeStamp = info.timeStamp;
             request.sign = info.sign;
             WXPayUtils.getInstance(context).sendRequest(request);
         } else {
@@ -131,8 +131,8 @@ public class PayUtils {
     }
 
 
-    public PayUtils wxPay(Activity context,PayInfo info) {
-        startPay(context, 2, info);
+    public PayUtils wxPay(Activity context, int type,PayInfo info) {
+        startPay(context, type, info);
         return this;
     }
 

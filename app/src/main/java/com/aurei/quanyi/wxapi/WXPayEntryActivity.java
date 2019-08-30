@@ -1,7 +1,7 @@
 package com.aurei.quanyi.wxapi;
 
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.aurei.quanyi.R;
 import com.aurei.quanyi.utils.PayUtils;
@@ -26,7 +26,8 @@ public class WXPayEntryActivity extends WXEntryActivity implements IWXAPIEventHa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         info = (PayInfo) getIntent().getSerializableExtra(WX_PAY_INFO);
-        PayUtils.getInstance().wxPay(WXPayEntryActivity.this, info);
+        PayUtils.getInstance().wxPay(WXPayEntryActivity.this,2, info);
+        Log.e("======>开始支付",info.toString());
     }
 
     @Override
@@ -36,16 +37,15 @@ public class WXPayEntryActivity extends WXEntryActivity implements IWXAPIEventHa
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (baseResp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
-                    Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
                     wxPayCallBack.onPaySuccess(type);
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
                     ToastUtils.show("微信支付失败");
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
-                    if (wxPayCallBack != null) {
-                        wxPayCallBack.onFailed(type);
-                    }
+//                    if (wxPayCallBack != null) {
+//                        wxPayCallBack.onFailed(type);
+//                    }
 //          ToastUtils.show("未支付");
                     break;
                 case BaseResp.ErrCode.ERR_AUTH_DENIED:

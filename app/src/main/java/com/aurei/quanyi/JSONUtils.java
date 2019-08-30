@@ -1,5 +1,7 @@
 package com.aurei.quanyi;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
@@ -767,6 +769,7 @@ public final class JSONUtils {
   }
 
   public static <T> T parseJsonToBean(String json) {
+    Log.e("=====>解析",json);
     Gson gson = new Gson();
     T t = null;
     try {

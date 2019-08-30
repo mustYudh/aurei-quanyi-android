@@ -9,7 +9,9 @@ import com.xuexiang.xhttp2.XHttp
 import com.xuexiang.xhttp2.XHttpSDK
 import com.xuexiang.xhttp2.cookie.CookieManager
 import com.xuexiang.xhttp2.model.HttpHeaders
+import com.yu.common.CommonInit
 import com.yu.common.base.BaseApp
+import com.yu.share.ShareAuthSDK
 
 /**
  * @author yudneghao
@@ -25,6 +27,8 @@ class APP : BaseApp() {
     override fun onCreate() {
         super.onCreate()
         appContext = this
+        CommonInit.init(this)
+        ShareAuthSDK.init(this, DEBUG)
         initHttp()
     }
 

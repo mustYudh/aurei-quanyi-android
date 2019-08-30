@@ -17,13 +17,13 @@ import com.aurei.quanyi.module.web.CommonWebViewActivity
 import com.aurei.quanyi.module.web.MainWebViewActivity
 import com.aurei.quanyi.module.web.bea.PayResult
 import com.aurei.quanyi.utils.*
+import com.aurei.quanyi.utils.bena.PayInfo
+import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.umeng.socialize.UMShareAPI
-import com.umeng.socialize.bean.SHARE_MEDIA
 import com.yu.common.launche.LauncherHelper
 
 /**
@@ -247,7 +247,6 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 when {
                     TextUtils.equals(resultStatus, "9000") -> {
                         activity?.runOnUiThread {
-                            showToast("支付成功")
                             webView.loadUrl("javascript:onPaySuccess()")
                         }
 
@@ -270,23 +269,26 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
 
 
     @JavascriptInterface
-    fun toWeChatPay(info: Any) {
-        Log.e("====>","微信支付" + info.toString())
-        val installWeChat = UMShareAPI.get(activity).isInstall(activity, SHARE_MEDIA.WEIXIN)
-        if (installWeChat) {
-            PayUtils.getInstance().wxPay(activity,null).getPayResult(object : PayUtils.PayCallBack {
-                override fun onPaySuccess(type: Int) {
+    fun toWeChatPay(info: String) {
+        try {
+                val gson = Gson()
+                var pay: PayInfo = gson.fromJson(info, PayInfo::class.java)
+                PayUtils.getInstance().pay(activity, 2, pay)
+                    .getPayResult(object : PayUtils.PayCallBack {
+                        override fun onPaySuccess(type: Int) {
 
-                }
+                        }
 
-                override fun onFailed(type: Int) {
+                        override fun onFailed(type: Int) {
 
-                }
+                        }
 
-            })
-        } else {
-            showToast("请先安装微信")
+                    })
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+
     }
 
     @JavascriptInterface

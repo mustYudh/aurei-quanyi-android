@@ -41,4 +41,14 @@
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
 
+
+    <style name="AppTransParentTheme" parent="@style/AppStyle">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/notAnimation</item>
+    </style>
+
+
+
 </resources>

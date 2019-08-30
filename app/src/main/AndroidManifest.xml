@@ -25,6 +25,25 @@
             android:theme="@style/AppStyle"
             tools:replace="android:theme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity
+                android:name=".wxapi.WXPayEntryActivity"
+                android:exported="true"
+                android:launchMode="singleTop"
+                android:theme="@style/AppTransParentTheme"/>
+        <activity
+                android:name=".wxapi.WXEntryActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:exported="true"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <meta-data
+                android:name="UMENG_APPKEY"
+                android:value="${UMENG_APPKEY}"/>
+        <meta-data
+                android:name="UMENG_CHANNEL"
+                android:value="${UMENG_CHANNEL}"/>
+        <meta-data
+                android:name="SENSORS_ANALYTICS_UTM_SOURCE"
+                android:value="${UMENG_CHANNEL}"/>
         <meta-data
                 android:name="android.max_aspect"
                 android:value="2.1"/>
@@ -85,6 +104,7 @@
         <activity android:name=".module.web.CommonWebViewActivity"
                   android:screenOrientation="portrait"
         />
+
     </application>
 
 </manifest>

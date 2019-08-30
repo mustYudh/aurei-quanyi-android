@@ -13,26 +13,38 @@ public class PayInfo implements Serializable {
   /**
    * server_timestamp : 1556612491212
    * lOrderId : 109
-   * appid : wx860254f6f0a55fc6
-   * noncestr : 6b2ad39a1121484c9247c771523f5e33
+   * appId : wx860254f6f0a55fc6
+   * nonceStr : 6b2ad39a1121484c9247c771523f5e33
    * package : Sign=WXPay
-   * partnerid : 1530876981
-   * prepayid : wx301621314489471ea78c026d0905693010
+   * partnerId : 1530876981
+   * prepayId : wx301621314489471ea78c026d0905693010
    * sign : 43CA1AE15EA8BCB6A13A1B36C40DA7230499D0A9C453419F03C18EACA4DC913E
-   * timestamp : 1556612491
+   * timeStamp : 1556612491
    */
 
-  public long server_timestamp;
   public int lOrderId = -1;
-  public String appid;
-  public String noncestr;
+  public String appId;
+  public String nonceStr;
   @SerializedName("package")
   public String packageX;
-  public String partnerid;
-  public String prepayid;
+  public String partnerId;
+  public String prepayId;
   public String sign;
-  public String timestamp;
+  public String timeStamp;
   public String sPaySign;
   public long s3rdUserId;
   public long s3rdOrderId;
+
+  @Override
+  public String toString() {
+    return "{\n" +
+            "  \"timeStamp\": " + timeStamp  + "," +
+            "  \"package\":  " + packageX  + "," +
+            "  \"appId\":  " + appId  + "," +
+            "  \"sign\":  " + sign  + "," +
+            "  \"prepayId\":  " + prepayId  + "," +
+            "  \"partnerId\":  " + partnerId  + "," +
+            "  \"nonceStr\":  " + nonceStr  + "," +
+            "}";
+  }
 }
