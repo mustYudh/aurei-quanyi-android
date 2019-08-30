@@ -36,9 +36,10 @@ fun EditText.getEditText(): String {
 
 fun getBaseUrl(): String {
 //    return "http://m.aurei.com.cn/#"
-//    return "http://172.90.14.232:8080/#"
+    //che
+    return "http://172.90.14.232:8080/#"
 //    return "http://129.28.196.121:8080/#"
-    return "http://172.90.11.167:8080/#"
+//    return "http://172.90.11.167:8080/#"
 }
 
 

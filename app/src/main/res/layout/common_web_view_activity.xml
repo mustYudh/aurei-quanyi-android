@@ -6,7 +6,8 @@
               android:background="@color/white"
 >
     <pl.droidsonroids.gif.GifImageView
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
             android:id="@+id/loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

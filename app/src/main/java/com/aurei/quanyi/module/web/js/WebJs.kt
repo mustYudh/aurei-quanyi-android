@@ -3,23 +3,27 @@ package com.aurei.quanyi.module.web.js
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import com.alipay.sdk.app.PayTask
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.login.LoginActivity
 import com.aurei.quanyi.module.web.CommonWebViewActivity
 import com.aurei.quanyi.module.web.MainWebViewActivity
-import com.aurei.quanyi.utils.filtrationUrl
-import com.aurei.quanyi.utils.getBaseUrl
-import com.aurei.quanyi.utils.getParams
+import com.aurei.quanyi.module.web.bea.PayResult
+import com.aurei.quanyi.utils.*
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.umeng.socialize.UMShareAPI
+import com.umeng.socialize.bean.SHARE_MEDIA
 import com.yu.common.launche.LauncherHelper
 
 /**
@@ -27,7 +31,6 @@ import com.yu.common.launche.LauncherHelper
  * @date 2017/8/30
  */
 class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webView) {
-
 
 
     //退出登录
@@ -95,7 +98,12 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 if (url == "/msgList") {
                     webView.loadUrl("${getBaseUrl()}/index")
                 } else {
-                    webView.loadUrl(filtrationUrl("${getBaseUrl()}$url${getParams(activity!!)}", activity!!))
+                    webView.loadUrl(
+                        filtrationUrl(
+                            "${getBaseUrl()}$url${getParams(activity!!)}",
+                            activity!!
+                        )
+                    )
                 }
 
             }
@@ -192,11 +200,14 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
 
     @JavascriptInterface
     fun openNewWebView(url: String, title: String) {
-        Log.e("======>二级页面", filtrationUrl("${getBaseUrl()}$url", activity!!, true) + "title:" + title)
+        Log.e(
+            "======>二级页面",
+            filtrationUrl("${getBaseUrl()}$url", activity!!, true) + "title:" + title
+        )
         if (url.startsWith("http") || url.startsWith("https")) {
             LauncherHelper.from(activity).startActivity(
                 CommonWebViewActivity.callIntent(
-                    activity!!, url,
+                    activity!!, filtrationUrl(url, activity!!, true),
                     title
                 )
             )
@@ -222,6 +233,61 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
 
 
     private var listener: GetTitleListener? = null
+
+
+    @JavascriptInterface
+    fun toAliPay(order: String) {
+        Log.e("======>order", order)
+        if (checkAliPayInstalled()) {
+            val payThread = Thread {
+                val aliPay = PayTask(activity)
+                val result = aliPay.payV2(order, true)
+                val payResult = PayResult(result)
+                val resultStatus = payResult.resultStatus
+                when {
+                    TextUtils.equals(resultStatus, "9000") -> {
+                        activity?.runOnUiThread {
+                            showToast("支付成功")
+                            webView.loadUrl("javascript:onPaySuccess()")
+                        }
+
+
+                    }
+                    TextUtils.equals(resultStatus, "6001") -> {
+                    }
+                    else -> {
+                        activity?.runOnUiThread {
+                            webView.loadUrl("javascript:onPayFailed()")
+                        }
+                    }
+                }
+            }
+            payThread.start()
+        } else {
+            showToast("请先安装支付宝")
+        }
+    }
+
+
+    @JavascriptInterface
+    fun toWeChatPay(info: Any) {
+        Log.e("====>","微信支付" + info.toString())
+        val installWeChat = UMShareAPI.get(activity).isInstall(activity, SHARE_MEDIA.WEIXIN)
+        if (installWeChat) {
+            PayUtils.getInstance().wxPay(activity,null).getPayResult(object : PayUtils.PayCallBack {
+                override fun onPaySuccess(type: Int) {
+
+                }
+
+                override fun onFailed(type: Int) {
+
+                }
+
+            })
+        } else {
+            showToast("请先安装微信")
+        }
+    }
 
     @JavascriptInterface
     fun finishWebView() {
@@ -249,4 +315,11 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
         this.listener = listener
     }
 
+
+    private fun checkAliPayInstalled(): Boolean {
+        val uri = Uri.parse("alipays://platformapi/startApp")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        val componentName = intent.resolveActivity(activity?.packageManager)
+        return componentName != null
+    }
 }

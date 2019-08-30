@@ -43,7 +43,9 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
     private var webJs: WebJs? = null
     @PresenterLifeCycle
     private val mPresenter = WebViewPresenter(this)
-
+    private var isPay = false
+    val extraHeaders = HashMap<String, String>()
+    private var firstVisitWXH5PayUrl = true
 
     override fun setView(savedInstanceState: Bundle?) {
         setContentView(R.layout.common_web_view_activity)
@@ -108,9 +110,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         val intentUrl = intent.getStringExtra(WEB_URL)
         Log.e("======>", "H5加载的url$intentUrl")
         synCookie(intentUrl)
-        webView?.postDelayed({
-            webView!!.loadUrl(intentUrl)
-        }, 1000)
+        webView!!.loadUrl(intentUrl)
         val permiss = arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -122,25 +122,29 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
         }
         webView!!.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                Log.e("======>哈哈哈哈",url)
+                Log.e("======>哈哈哈哈", url)
                 try {
                     if (url.startsWith("weixin://wap/pay?") // 微信
                         || url.startsWith("alipays://") // 支付宝
-                        || url.startsWith("mailto://") // 邮件
-                        || url.startsWith("tel:")// 电话
-                        || url.startsWith("dianping://")// 大众点评
-// 其他自定义的scheme
+                        || url.startsWith("mailto://")
+                        || url.startsWith("tel:")
+                        || url.startsWith("dianping://")
                     ) {
                         title = "支付"
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
+                        isPay = true
+                        Log.e("======>重定向1",url)
                         return true
                     } else if (url.startsWith("https://wx.tenpay.com")) {
                         title = "支付"
-                        val extraHeaders = HashMap<String, String>()
-                        extraHeaders["Referer"] = "http://m.aurei.com.cn"
-                        view.loadUrl(url, extraHeaders)
-                        return true
+                        if (firstVisitWXH5PayUrl) {
+                            extraHeaders.clear()
+                            extraHeaders["Referer"] = "http://m.aurei.com.cn"
+                            view.loadUrl(url, extraHeaders)
+                            firstVisitWXH5PayUrl = false
+                        }
+                        return super.shouldOverrideUrlLoading(view,url)
                     }
                 } catch (e: Exception) {
                     return true
@@ -150,21 +154,22 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
             }
 
 
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view?.loadUrl(request?.getUrl().toString())
-                } else {
-                    view?.loadUrl(request.toString())
-                }
-                return true
-            }
-
+            //            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    view?.loadUrl(request?.getUrl().toString())
+//                } else {
+//                    view?.loadUrl(request.toString())
+//                }
+//                return true
+//            }
+//
             override fun onPageFinished(view: WebView?, url: String?) {
                 loading.visibility = View.GONE
                 bindView<BarIconContainer>(R.id.close, webView != null && webView?.canGoBack()!!)
                 super.onPageFinished(view, url)
             }
 
+            //
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 loading.visibility = View.GONE
                 super.onReceivedError(view, request, error)
@@ -211,7 +216,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
          */
         fun callIntent(context: Context, url: String, title: String): Intent {
             val intent = Intent(context, CommonWebViewActivity::class.java)
-            Log.e("======>url-intent",url)
+            Log.e("======>url-intent", url)
             intent.putExtra(WEB_URL, url)
             intent.putExtra(TITLE, title)
             return intent
