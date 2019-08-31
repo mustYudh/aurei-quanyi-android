@@ -271,19 +271,24 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
     @JavascriptInterface
     fun toWeChatPay(info: String) {
         try {
-                val gson = Gson()
-                var pay: PayInfo = gson.fromJson(info, PayInfo::class.java)
-                PayUtils.getInstance().pay(activity, 2, pay)
-                    .getPayResult(object : PayUtils.PayCallBack {
-                        override fun onPaySuccess(type: Int) {
-
+            val gson = Gson()
+            var pay: PayInfo = gson.fromJson(info, PayInfo::class.java)
+            PayUtils.getInstance().pay(activity, 2, pay)
+                .getPayResult(object : PayUtils.PayCallBack {
+                    override fun onPaySuccess(type: Int) {
+                        activity?.runOnUiThread {
+                            webView.loadUrl("javascript:onPaySuccess()")
                         }
 
-                        override fun onFailed(type: Int) {
+                    }
 
+                    override fun onFailed(type: Int) {
+                        activity?.runOnUiThread {
+                            webView.loadUrl("javascript:onPayFailed()")
                         }
+                    }
 
-                    })
+                })
         } catch (e: Exception) {
             e.printStackTrace()
         }
