@@ -247,7 +247,7 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 when {
                     TextUtils.equals(resultStatus, "9000") -> {
                         activity?.runOnUiThread {
-                            webView.loadUrl("javascript:onPaySuccess()")
+                            webView.loadUrl("javascript:onPaySuccess(1)")
                         }
 
 
@@ -256,7 +256,7 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                     }
                     else -> {
                         activity?.runOnUiThread {
-                            webView.loadUrl("javascript:onPayFailed()")
+                            webView.loadUrl("javascript:onPaySuccess(1)")
                         }
                     }
                 }
@@ -277,14 +277,14 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 .getPayResult(object : PayUtils.PayCallBack {
                     override fun onPaySuccess(type: Int) {
                         activity?.runOnUiThread {
-                            webView.loadUrl("javascript:onPaySuccess()")
+                            webView.loadUrl("javascript:onPaySuccess(2)")
                         }
 
                     }
 
                     override fun onFailed(type: Int) {
                         activity?.runOnUiThread {
-                            webView.loadUrl("javascript:onPayFailed()")
+                            webView.loadUrl("javascript:onPayFailed(2)")
                         }
                     }
 
