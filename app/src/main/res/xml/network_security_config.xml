@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <base-config cleartextTrafficPermitted="true" />
-</resources>
+<network-security-config>
+  <base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+      <!--trust system while release only-->
+      <certificates src="system" />
+    </trust-anchors>
+  </base-config>
+  </network-security-config>
