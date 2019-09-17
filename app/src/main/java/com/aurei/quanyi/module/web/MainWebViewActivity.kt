@@ -97,8 +97,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
                 }
             }
         }
-
-        webView!!.webViewClient = object : WebViewClient() {
+        val webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 try {
                     if (url.startsWith("weixin://wap/pay?") // 微信
@@ -135,6 +134,8 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
             }
 
         }
+        webView!!.webViewClient = webViewClient
+        StatService.bindJSInterface(this, webView, webViewClient)
     }
 
 

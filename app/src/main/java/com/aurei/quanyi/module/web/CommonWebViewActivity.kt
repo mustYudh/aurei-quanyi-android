@@ -19,6 +19,7 @@ import com.aurei.quanyi.module.web.bea.UploadStatus.uploadSuccess
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
+import com.baidu.mobstat.StatService
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -120,7 +121,7 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
             val rxPermissions = RxPermissions(this)
             rxPermissions.request(*permiss).subscribe {}
         }
-        webView!!.webViewClient = object : WebViewClient() {
+        val webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 try {
                     if (url.startsWith("weixin://wap/pay?") // 微信
@@ -153,15 +154,6 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
             }
 
 
-            //            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    view?.loadUrl(request?.getUrl().toString())
-//                } else {
-//                    view?.loadUrl(request.toString())
-//                }
-//                return true
-//            }
-//
             override fun onPageFinished(view: WebView?, url: String?) {
                 loading.visibility = View.GONE
                 bindView<BarIconContainer>(R.id.close, webView != null && webView?.canGoBack()!!)
@@ -174,6 +166,8 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                 super.onReceivedError(view, request, error)
             }
         }
+        webView!!.webViewClient = webViewClient
+        StatService.bindJSInterface(this, webView, webViewClient)
     }
 
     private fun synCookie(url: String) {
