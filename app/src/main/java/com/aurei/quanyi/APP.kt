@@ -59,6 +59,8 @@ class APP : BaseApp() {
         //添加全局公共请求参数
         XHttp.getInstance().addCommonHeaders(getHttpHeaders())
         XHttp.getInstance().setCookieStore(CookieManager.getInstance(this))
+        XHttp.getInstance().setCertificates()
+
     }
 
 
@@ -79,4 +81,6 @@ class APP : BaseApp() {
                 "http://m.aurei.com.cn"
         }
     }
+
+
 }

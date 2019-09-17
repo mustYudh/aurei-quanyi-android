@@ -90,3 +90,6 @@
 
 
 -keep class cn.com.chinatelecom.account.**{*;}
+
+-keep class com.baidu.mobstat.** { *; }
+

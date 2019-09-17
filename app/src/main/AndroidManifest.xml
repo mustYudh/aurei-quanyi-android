@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
 
     <application
             android:networkSecurityConfig="@xml/network_security_config"
@@ -36,6 +40,45 @@
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:exported="true"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <meta-data android:name="BaiduMobAd_SEND_STRATEGY"
+                android:value="APP_START" />
+
+        <meta-data android:name="BaiduMobAd_TIME_INTERVAL"
+                android:value="2" />
+        <meta-data
+                android:name="BaiduMobAd_STAT_ID"
+                android:value="${BAIDU_KEY}" />
+
+        <!-- 渠道商编号 -->
+        <meta-data
+                android:name="BaiduMobAd_CHANNEL"
+                android:value="${CHANNEL}" />
+
+        <!-- 是否开启错误日志统计，默认为false -->
+        <meta-data
+                android:name="BaiduMobAd_EXCEPTION_LOG"
+                android:value="true" />
+
+        <!-- 日志仅在wifi网络下发送，默认为false -->
+        <meta-data
+                android:name="BaiduMobAd_ONLY_WIFI"
+                android:value="false" />
+
+        <!-- 是否获取基站位置信息 ,默认为true -->
+        <meta-data
+                android:name="BaiduMobAd_CELL_LOCATION"
+                android:value="true" />
+
+        <!-- 是否获取GPS位置信息，默认为true -->
+        <meta-data
+                android:name="BaiduMobAd_GPS_LOCATION"
+                android:value="true" />
+
+        <!-- 是否获取WIFI位置信息，默认为true -->
+        <meta-data
+                android:name="BaiduMobAd_WIFI_LOCATION"
+                android:value="true" />
         <meta-data
                 android:name="UMENG_APPKEY"
                 android:value="${UMENG_APPKEY}"/>

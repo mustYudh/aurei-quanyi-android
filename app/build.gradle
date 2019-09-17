@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'mtj-circle-plugin'
+
 
 enum ApiEnvEnum {
     DEV(0, "澳雷权益"), ONLINE(1, "澳雷权益"), PRE_RELEASE(2, "澳雷权益")
@@ -43,7 +45,7 @@ android {
         multiDexEnabled true
         buildConfigField("int", "API_MODE", "${(envStr as ApiEnvEnum).value}")
         manifestPlaceholders = [APP_NAME     : appNameStr, UMENG_APPKEY: '5d1afe890cafb29716000c51',
-                                UMENG_CHANNEL: 'aurei',]
+                                UMENG_CHANNEL: 'aurei', BAIDU_KEY: "79919f0bc4",CHANNEL:"quan_yi"]
     }
 //    5d1afe890cafb29716000c51
 
@@ -69,7 +71,7 @@ android {
         quanyi {
             applicationId rootProject.ext.applicationId
             manifestPlaceholders = [APP_NAME     : appNameStr, UMENG_APPKEY: '5d1afe890cafb29716000c51',
-                                    UMENG_CHANNEL: 'aurei',]
+                                    UMENG_CHANNEL: 'aurei', BAIDU_KEY: "79919f0bc4",CHANNEL:"quan_yi"]
         }
     }
 
@@ -135,6 +137,14 @@ android {
 //            universalApk true
 //        }
 //    }
+    MtjCirclePluginConfig {
+        // 设置appkey，必须设置，否则插件使用无效
+        appkey = '79919f0bc4'
+        // 设置debug 开关，默认关闭，如果需要查看日志则打开开关（true），建议正式版关闭以避免影响性能
+        debug = false
+        // 默认启动此插件，如果开发者不需要可以禁用（false）
+        enabled = true
+    }
 }
 
 dependencies {
@@ -155,6 +165,7 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:2.2.3'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
+
 }
 
 repositories {

@@ -22,6 +22,8 @@ import com.aurei.quanyi.module.web.presenter.WebViewViewer
 import com.aurei.quanyi.utils.PressHandle
 import com.aurei.quanyi.utils.getBaseUrl
 import com.aurei.quanyi.utils.getParams
+import com.baidu.mobstat.SendStrategyEnum
+import com.baidu.mobstat.StatService
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -149,6 +151,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 
     @SuppressLint("CheckResult")
     override fun loadData() {
+        initBaiDu()
         EventBus.getDefault().register(this)
         val showBg = intent.getBooleanExtra(SHOW_BG, true)
         splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
@@ -162,7 +165,12 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
         val permiss = arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_SETTINGS,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
         if (Build.VERSION.SDK_INT >= 23) {
             val rxPermissions = RxPermissions(this)
@@ -173,6 +181,11 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 //                setTitle(title)
             }
         })
+    }
+
+    private fun initBaiDu() {
+        StatService.setDebugOn(true)
+        StatService.setSendLogStrategy(this,SendStrategyEnum.APP_START,1,false)
     }
 
     private fun synCookie(url: String) {
