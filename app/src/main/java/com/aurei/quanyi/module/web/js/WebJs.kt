@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
@@ -18,6 +19,7 @@ import com.aurei.quanyi.module.web.MainWebViewActivity
 import com.aurei.quanyi.module.web.bea.PayResult
 import com.aurei.quanyi.utils.*
 import com.aurei.quanyi.utils.bena.PayInfo
+import com.bestpay.app.PaymentTask
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -25,6 +27,8 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.qianchang.optimizetax.data.UserProfile
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yu.common.launche.LauncherHelper
+
+
 
 /**
  * @author chenwei
@@ -292,6 +296,16 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+    }
+
+    @SuppressLint("PackageManagerGetSignatures")
+    @JavascriptInterface
+    fun toYiPay(paramsStr: String) {
+        val packageName = activity?.packageName
+        val  singn = activity?.packageManager?.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)?.signatures?.get(0)?.toCharsString()
+        val paymentTask = PaymentTask(activity)
+        paymentTask.pay(paramsStr,singn)
 
 
     }

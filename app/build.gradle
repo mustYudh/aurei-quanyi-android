@@ -148,7 +148,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation(name: 'CTAccountSdk_HY_v3.6.1_armeabi', ext: 'aar')
     implementation(name: 'alipaySdk-15.6.3-20190605142540', ext: 'aar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -157,7 +157,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     implementation project(path: ':common')
     implementation project(path: ':http-lib')
     implementation project(':share')
@@ -165,7 +164,8 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:2.2.3'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
-
+    implementation files('libs/passguard.jar')
+    implementation files('libs/BestpaySDK-V4.1.0.jar')
 }
 
 repositories {
