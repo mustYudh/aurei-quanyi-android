@@ -19,6 +19,7 @@ import com.aurei.quanyi.module.web.bea.UploadStatus.uploadSuccess
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
+import com.aurei.quanyi.utils.BaiDuStartWebBean
 import com.aurei.quanyi.utils.PressHandle
 import com.aurei.quanyi.utils.getBaseUrl
 import com.aurei.quanyi.utils.getParams
@@ -115,16 +116,33 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
                         extraHeaders["Referer"] = "http://m.aurei.com.cn"
                         view.loadUrl(url, extraHeaders)
                         return true
+                    } else if (url.startsWith("bmtj:")) {
+                        val data = url.split("bmtj:")
+                        if (data.size >= 2) {
+                            val result: BaiDuStartWebBean =
+                                Gson().fromJson(data[1], BaiDuStartWebBean::class.java)
+                            if (!TextUtils.isEmpty(result.action) && result.action!! == "onEventWithAttributes") {
+                                StatService.onEvent(
+                                    activity,
+                                    result.obj?.event_id,
+                                    if (result.obj?.label == null) null else result.obj?.label.toString()
+                                )
+                            }
+                        }
+                        return super.shouldOverrideUrlLoading(view, url)
                     }
                 } catch (e: Exception) {
                     return true
                 }
-                view.loadUrl(url)
+                    view.loadUrl(url)
                 return true
             }
 
 
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     view?.loadUrl(request?.getUrl().toString())
                 } else {
@@ -157,7 +175,8 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
         val showBg = intent.getBooleanExtra(SHOW_BG, true)
         splash_bg.visibility = if (showBg) View.VISIBLE else View.GONE
         val intentUrl = intent.getStringExtra(WEB_URL)
-        val url = if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
+        val url =
+            if (TextUtils.isEmpty(intentUrl)) "${getBaseUrl()}/index?${getParams(activity)}" else intentUrl
         Log.e("======>", "H5加载的url$url")
         synCookie(url)
 //        webView?.postDelayed({
@@ -186,7 +205,7 @@ class MainWebViewActivity : BaseActivity(), WebViewViewer {
 
     private fun initBaiDu() {
         StatService.setDebugOn(true)
-        StatService.setSendLogStrategy(this,SendStrategyEnum.APP_START,1,false)
+        StatService.setSendLogStrategy(this, SendStrategyEnum.APP_START, 1, false)
     }
 
     private fun synCookie(url: String) {

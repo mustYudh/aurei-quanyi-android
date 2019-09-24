@@ -19,6 +19,7 @@ import com.aurei.quanyi.module.web.bea.UploadStatus.uploadSuccess
 import com.aurei.quanyi.module.web.js.WebJs
 import com.aurei.quanyi.module.web.presenter.WebViewPresenter
 import com.aurei.quanyi.module.web.presenter.WebViewViewer
+import com.aurei.quanyi.utils.BaiDuStartWebBean
 import com.baidu.mobstat.StatService
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
@@ -134,7 +135,6 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
                         isPay = true
-                        Log.e("======>重定向1",url)
                         return true
                     } else if (url.startsWith("https://wx.tenpay.com")) {
                         title = "支付"
@@ -144,7 +144,21 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                             view.loadUrl(url, extraHeaders)
                             firstVisitWXH5PayUrl = false
                         }
-                        return super.shouldOverrideUrlLoading(view,url)
+                        return super.shouldOverrideUrlLoading(view, url)
+                    } else if (url.startsWith("bmtj:")) {
+                        val data = url.split("bmtj:")
+                        if (data.size >= 2) {
+                            val result: BaiDuStartWebBean =
+                                Gson().fromJson(data[1], BaiDuStartWebBean::class.java)
+                            if (!TextUtils.isEmpty(result.action) && result.action!! == "onEventWithAttributes") {
+                                StatService.onEvent(
+                                    activity,
+                                    result.obj?.event_id,
+                                    if (result.obj?.label == null) null else result.obj?.label.toString()
+                                )
+                            }
+                        }
+                        return super.shouldOverrideUrlLoading(view, url)
                     }
                 } catch (e: Exception) {
                     return true
@@ -161,7 +175,11 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
             }
 
             //
-            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
                 loading.visibility = View.GONE
                 super.onReceivedError(view, request, error)
             }

@@ -11,9 +11,11 @@ import com.aurei.quanyi.R
 import com.aurei.quanyi.base.BaseActivity
 import com.aurei.quanyi.module.login.presenter.LoginPresenter
 import com.aurei.quanyi.module.login.presenter.LoginViewer
+import com.aurei.quanyi.utils.BaiDuStatService
 import com.aurei.quanyi.utils.getEditText
 import com.aurei.quanyi.utils.getPassword
 import com.aurei.quanyi.utils.registerUrl
+import com.baidu.mobstat.StatService
 import com.qianli.housekeeper.data.PublicProfile
 import com.yu.common.mvp.PresenterLifeCycle
 import com.yu.common.navigation.StatusBarFontColorUtil
@@ -58,6 +60,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginViewer {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.login -> {
+                StatService.onEvent(activity, BaiDuStatService.LOGIN,null)
                 mPresenter.login(user_account.getEditText(), password.getEditText(), loginCallBack)
             }
             R.id.register -> {
