@@ -244,6 +244,18 @@ class CommonWebViewActivity : BaseBarActivity(), WebViewViewer {
                     mPresenter.uploadImage(File(selectList[0].compressPath))
                 }
             }
+        } else if (requestCode == 1000 && resultCode == 1) {
+            if (!TextUtils.isEmpty(data?.getStringExtra("result")) && data?.getStringExtra("result").equals(
+                    "支付成功")
+            ) {
+                activity?.runOnUiThread {
+                    webView?.loadUrl("javascript:onPaySuccess(3)")
+                }
+            } else {
+                activity?.runOnUiThread {
+                    webView?.loadUrl("javascript:onPayFailed(3)")
+                }
+            }
         }
     }
 

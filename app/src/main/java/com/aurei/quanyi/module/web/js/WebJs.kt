@@ -29,7 +29,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yu.common.launche.LauncherHelper
 
 
-
 /**
  * @author chenwei
  * @date 2017/8/30
@@ -302,12 +301,14 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
     @SuppressLint("PackageManagerGetSignatures")
     @JavascriptInterface
     fun toYiPay(paramsStr: String) {
-        val packageName = activity?.packageName
-        val  singn = activity?.packageManager?.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)?.signatures?.get(0)?.toCharsString()
-        val paymentTask = PaymentTask(activity)
-        paymentTask.pay(paramsStr,singn)
-
-
+        val payThread = Thread {
+            val packageName = activity?.packageName
+            val singn =
+                activity?.packageManager?.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+                    ?.signatures?.get(0)?.toCharsString()
+            val paymentTask = PaymentTask(activity)
+            paymentTask.pay(paramsStr, singn)
+        }.start()
     }
 
     @JavascriptInterface
