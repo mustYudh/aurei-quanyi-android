@@ -31,7 +31,7 @@
             android:theme="@style/AppStyle"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning"
-            tools:replace="android:theme">
+            tools:replace="android:theme,label">
 
         <activity
                 android:name=".wxapi.WXPayEntryActivity"

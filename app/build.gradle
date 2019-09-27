@@ -46,11 +46,21 @@ android {
         buildConfigField("int", "API_MODE", "${(envStr as ApiEnvEnum).value}")
         manifestPlaceholders = [APP_NAME     : appNameStr, UMENG_APPKEY: '5d1afe890cafb29716000c51',
                                 UMENG_CHANNEL: 'aurei', BAIDU_KEY: "79919f0bc4",CHANNEL:"quan_yi"]
+
+        ndk {
+            abiFilters("armeabi", "armeabi-v7a", "x86", "mips")
+        }
     }
 //    5d1afe890cafb29716000c51
 
 
+
+
     signingConfigs {
+
+
+
+
         debug {
             storeFile file('../keystores/quanyi.jks')
             storePassword 'asdfghjkl'
@@ -84,7 +94,7 @@ android {
         }
 
         variant.outputs.all { output ->
-            def versionCodes = ["armeabi-v7a": 1/*,'x86': 2,"x86_64": 3*/]
+            def versionCodes = ["armeabi-v7a": 1,'armeabi': 2,"x86": 3,"mips": 4]
             def abi = output.getFilter(com.android.build.OutputFile.ABI)
             if (abi != null) {
                 output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
@@ -124,19 +134,29 @@ android {
     }
 
 
+    packagingOptions{
+        doNotStrip "*/armeabi-v7a/libkeyboardGuard.so"
+        doNotStrip "*/arm64-v8a/libkeyboardGuard.so"
+        doNotStrip "*/x86/libkeyboardGuard.so"
+        doNotStrip "*/x86_64/libkeyboardGuard.so"
+        doNotStrip "*/armeabi/libkeyboardGuard.so"
+
+    }
+
+
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
 
-//    splits {
-//        abi {
-//            enable true
-//            reset()
-//            include 'x86', 'armeabi-v7a','x86_64'
-//            universalApk true
-//        }
-//    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi", "armeabi-v7a", "x86", "mips"
+            universalApk true
+        }
+    }
     MtjCirclePluginConfig {
         // 设置appkey，必须设置，否则插件使用无效
         appkey = '79919f0bc4'
@@ -145,8 +165,15 @@ android {
         // 默认启动此插件，如果开发者不需要可以禁用（false）
         enabled = true
     }
-    packagingOptions{
-        doNotStrip "*/armeabi-v7a/libkeyboardGuard.so"
+
+    sourceSets {
+
+        main {
+
+            jniLibs.srcDirs = ['libs']
+
+        }
+
     }
 }
 

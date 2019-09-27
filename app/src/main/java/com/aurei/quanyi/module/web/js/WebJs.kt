@@ -306,8 +306,7 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 activity?.packageManager?.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
                     ?.signatures?.get(0)?.toCharsString()
             val paymentTask = PaymentTask(activity)
-            Log.e("======>",singn)
-            paymentTask.pay(paramsStr, singn)
+            paymentTask.pay(paramsStr, "7cd36ca651931365166a6fbe1bfd04ed8d82101ef818ee29347e6cc72a4fd8979ff868fa9cf40e8c694cf60b0e48e9ed31ca87f727135494514b6400682f6c41de7b31239fb11f201730b5f60178d871bb2bba5b7cb8c01b49ff674d1ba958d141554d266f11379c785e94d5c2bb9be7a5ad9652da7c50519a8723d17c6c84b4")
         }.start()
     }
 
