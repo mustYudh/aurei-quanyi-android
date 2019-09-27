@@ -39,7 +39,6 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
     //退出登录
     @JavascriptInterface
     fun logout() {
-        Log.e("======>bridge-logout", "触发")
         UserProfile.clean()
         LauncherHelper.from(activity).startActivity(LoginActivity.getIntent(activity!!, {
             LauncherHelper.from(activity).startActivity(
@@ -307,6 +306,7 @@ class WebJs(activity: BaseActivity, webView: WebView) : BaseWebJs(activity, webV
                 activity?.packageManager?.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
                     ?.signatures?.get(0)?.toCharsString()
             val paymentTask = PaymentTask(activity)
+            Log.e("======>",singn)
             paymentTask.pay(paramsStr, singn)
         }.start()
     }
